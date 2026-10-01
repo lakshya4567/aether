@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<meta name="description" content="Aether — We build software for what comes next.">
+<title>Aether — Software for what comes next.</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg: #08090b;
+    --bg2: #0d0f12;
+    --surface: #111419;
+    --surface2: #15181d;
+    --text: #f3f4f6;
+    --muted: #8d929b;
+    --dim: #555b65;
+    --line: rgba(255,255,255,.09);
+    --line2: rgba(255,255,255,.15);
+    --accent: #8ea2ff;
+    --accent2: #b7c2ff;
+    --max: 1400px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: .025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+::selection {
+    background: #dce2ff;
+    color: #08090b;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font: inherit;
+}
+
+/* ─────────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────────── */
+
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 78px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid transparent;
+    transition: .35s ease;
+}
+
+.nav.scrolled {
+    background: rgba(8,9,11,.78);
+    backdrop-filter: blur(18px);
+    border-bottom-color: var(--line);
+}
+
+.nav-inner {
+    width: min(var(--max), calc(100% - 56px));
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    font-weight: 700;
+    letter-spacing: -.04em;
+}
+
+.brand-mark {
+    width: 30px;
+    height: 30px;
+}
+
+.brand-name {
+    font-size: 16px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+    color: #aeb2b9;
+    font-size: 13px;
+}
+
+.nav-links a {
+    transition: color .2s ease;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.nav-product {
+    padding: 10px 15px;
+    border: 1px solid var(--line2);
+    border-radius: 100px;
+    font-size: 12px;
+    transition: .25s ease;
+}
+
+.nav-product:hover {
+    background: white;
+    color: black;
+}
+
+/* ─────────────────────────────────────────────
+   GLOBAL
+───────────────────────────────────────────── */
+
+.container {
+    width: min(var(--max), calc(100% - 56px));
+    margin: auto;
+}
+
+.mono {
+    font-family: "DM Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    font-size: 10px;
+}
+
+.label {
+    color: var(--muted);
+}
+
+.accent {
+    color: var(--accent);
+}
+
+.section {
+    position: relative;
+    padding: 170px 0;
+    border-top: 1px solid var(--line);
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity .9s cubic-bezier(.16,1,.3,1),
+                transform .9s cubic-bezier(.16,1,.3,1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────── */
+
+.hero {
+    min-height: 100vh;
+    padding-top: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    right: -350px;
+    top: 80px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(111,130,255,.12) 0%,
+        rgba(111,130,255,.04) 30%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+
+.hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 45px;
+}
+
+.hero-location {
+    color: var(--dim);
+}
+
+.hero-title {
+    max-width: 1180px;
+    font-size: clamp(58px, 8.3vw, 138px);
+    line-height: .9;
+    letter-spacing: -.075em;
+    font-weight: 600;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title span {
+    display: block;
+}
+
+.hero-title .indent {
+    margin-left: 15%;
+}
+
+.hero-title .thin {
+    font-weight: 400;
+    color: #aeb2b9;
+}
+
+.hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 40px;
+    margin-top: 85px;
+    align-items: end;
+}
+
+.hero-description {
+    max-width: 580px;
+    color: #979ca5;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.hero-cta {
+    justify-self: end;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid var(--line2);
+    padding: 15px 18px;
+    font-size: 12px;
+    transition: .3s ease;
+}
+
+.button span:last-child {
+    font-size: 17px;
+    transition: transform .3s ease;
+}
+
+.button:hover {
+    background: #f4f4f4;
+    color: #08090b;
+}
+
+.button:hover span:last-child {
+    transform: translate(4px,-4px);
+}
+
+/* ─────────────────────────────────────────────
+   HERO GRID
+───────────────────────────────────────────── */
+
+.hero-grid {
+    position: absolute;
+    right: -5%;
+    bottom: 3%;
+    width: 48vw;
+    height: 48vw;
+    max-width: 680px;
+    max-height: 680px;
+    opacity: .35;
+    pointer-events: none;
+}
+
+.grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 45px 45px;
+    mask-image: radial-gradient(circle, black 20%, transparent 72%);
+}
+
+.orbit {
+    position: absolute;
+    inset: 12%;
+    border: 1px solid rgba(170,180,255,.25);
+    border-radius: 50%;
+    animation: rotate 30s linear infinite;
+}
+
+.orbit.two {
+    inset: 24%;
+    animation-duration: 20s;
+    animation-direction: reverse;
+}
+
+.orbit.three {
+    inset: 36%;
+    animation-duration: 13s;
+}
+
+.core {
+    position: absolute;
+    width: 17%;
+    height: 17%;
+    left: 41.5%;
+    top: 41.5%;
+    border: 1px solid rgba(190,200,255,.5);
+    transform: rotate(45deg);
+    box-shadow: 0 0 60px rgba(130,150,255,.18);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.core::after {
+    content: "";
+    position: absolute;
+    inset: 25%;
+    background: rgba(180,190,255,.75);
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%,100% { transform: rotate(45deg) scale(1); }
+    50% { transform: rotate(45deg) scale(1.15); }
+}
+
+/* ─────────────────────────────────────────────
+   INTRO
+───────────────────────────────────────────── */
+
+.intro {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+}
+
+.section-number {
+    color: var(--dim);
+}
+
+.intro-title {
+    font-size: clamp(38px, 5vw, 76px);
+    line-height: .98;
+    letter-spacing: -.055em;
+    max-width: 900px;
+}
+
+.intro-title em {
+    font-style: normal;
+    color: #777d87;
+}
+
+/* ─────────────────────────────────────────────
+   PRODUCT
+───────────────────────────────────────────── */
+
+.product-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    margin-bottom: 90px;
+}
+
+.product-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product-meta strong {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.product-title {
+    font-size: clamp(55px, 8vw, 120px);
+    line-height: .86;
+    letter-spacing: -.075em;
+    font-weight: 600;
+}
+
+.product-title small {
+    display: block;
+    margin-top: 22px;
+    color: var(--accent);
+    font-family: "DM Mono", monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+/* ─────────────────────────────────────────────
+   VIDCLIPS VISUAL
+───────────────────────────────────────────── */
+
+.vidclips-visual {
+    position: relative;
+    min-height: 650px;
+    border: 1px solid var(--line);
+    background:
+        radial-gradient(circle at 75% 20%, rgba(105,125,255,.12), transparent 28%),
+        #0b0d10;
+    overflow: hidden;
+}
+
+.vc-top {
+    height: 54px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.vc-brand {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+}
+
+.vc-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #7e8490;
+    font-size: 10px;
+    font-family: "DM Mono", monospace;
+}
+
+.status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #a9b6ff;
+    box-shadow: 0 0 10px #a9b6ff;
+}
+
+.vc-content {
+    display: grid;
+    grid-template-columns: 1.5fr .8fr;
+    height: 596px;
+}
+
+.vc-preview {
+    position: relative;
+    border-right: 1px solid var(--line);
+    overflow: hidden;
+}
+
+.preview-image {
+    position: absolute;
+    inset: 35px;
+    background:
+        linear-gradient(145deg, #151920, #070809);
+    overflow: hidden;
+}
+
+.preview-image::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(150,160,200,.15), transparent 25%),
+        radial-gradient(ellipse at 75% 65%, rgba(80,100,180,.15), transparent 30%);
+}
+
+.scene-shape {
+    position: absolute;
+    border: 1px solid rgba(180,190,255,.35);
+}
+
+.scene-one {
+    width: 34%;
+    height: 42%;
+    left: 18%;
+    top: 25%;
+}
+
+.scene-two {
+    width: 20%;
+    height: 25%;
+    right: 15%;
+    top: 16%;
+}
+
+.scene-three {
+    width: 28%;
+    height: 32%;
+    right: 20%;
+    bottom: 15%;
+}
+
+.scan {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #abb7ff, transparent);
+    left: 5%;
+    right: 5%;
+    top: 0;
+    animation: scan 4s ease-in-out infinite;
+    opacity: .7;
+}
+
+@keyframes scan {
+    0%,100% { top: 10%; opacity: 0; }
+    15% { opacity: .8; }
+    50% { top: 90%; }
+    80% { opacity: 0; }
+}
+
+.object-point {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 1px solid #b7c2ff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(170,185,255,.6);
+}
+
+.point-one { left: 28%; top: 34%; }
+.point-two { left: 45%; top: 57%; }
+.point-three { left: 71%; top: 27%; }
+.point-four { left: 68%; top: 70%; }
+
+.preview-label {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    color: #777e89;
+}
+
+.timeline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 85px;
+    border-top: 1px solid var(--line);
+    background: rgba(5,6,7,.7);
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    gap: 3px;
+}
+
+.timeline-block {
+    height: 38px;
+    border: 1px solid var(--line2);
+    flex: 1;
+    position: relative;
+}
+
+.timeline-block.active {
+    border-color: rgba(170,185,255,.55);
+    background: rgba(130,145,255,.07);
+}
+
+.timeline-block::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 35%;
+    height: 2px;
+    background: rgba(170,185,255,.5);
+}
+
+.vc-analysis {
+    padding: 26px 22px;
+}
+
+.analysis-title {
+    color: #737984;
+    margin-bottom: 22px;
+}
+
+.analysis-item {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.analysis-item-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 9px;
+}
+
+.analysis-name {
+    font-size: 12px;
+}
+
+.analysis-value {
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    color: #777e89;
+}
+
+.analysis-line {
+    height: 2px;
+    background: #1c2026;
+    position: relative;
+}
+
+.analysis-line span {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    background: #8e9dff;
+}
+
+.analysis-item:nth-child(2) .analysis-line span { width: 91%; }
+.analysis-item:nth-child(3) .analysis-line span { width: 78%; }
+.analysis-item:nth-child(4) .analysis-line span { width: 84%; }
+.analysis-item:nth-child(5) .analysis-line span { width: 69%; }
+.analysis-item:nth-child(6) .analysis-line span { width: 88%; }
+
+.product-description {
+    max-width: 600px;
+    margin-top: 55px;
+    margin-left: auto;
+    color: #9297a0;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* ─────────────────────────────────────────────
+   PIPELINE
+───────────────────────────────────────────── */
+
+.pipeline-intro {
+    max-width: 850px;
+}
+
+.pipeline-title {
+    margin-top: 30px;
+    font-size: clamp(42px, 6vw, 86px);
+    letter-spacing: -.06em;
+    line-height: .95;
+}
+
+.pipeline {
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.pipeline-step {
+    min-height: 280px;
+    border-top: 1px solid var(--line2);
+    border-right: 1px solid var(--line);
+    padding: 25px;
+    position: relative;
+}
+
+.pipeline-step:last-child {
+    border-right: none;
+}
+
+.step-number {
+    color: var(--dim);
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+}
+
+.step-name {
+    position: absolute;
+    bottom: 28px;
+    font-size: clamp(22px, 2.5vw, 35px);
+    letter-spacing: -.045em;
+}
+
+.step-arrow {
+    position: absolute;
+    right: 25px;
+    top: 24px;
+    color: #515761;
+}
+
+/* ─────────────────────────────────────────────
+   CAPABILITIES
+───────────────────────────────────────────── */
+
+.capabilities {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 100px;
+}
+
+.capability-heading {
+    font-size: clamp(42px, 5vw, 72px);
+    line-height: .95;
+    letter-spacing: -.06em;
+}
+
+.capability-heading span {
+    color: #6c727b;
+}
+
+.capability-list {
+    border-top: 1px solid var(--line2);
+}
+
+.capability {
+    display: grid;
+    grid-template-columns: 80px 1fr 80px;
+    align-items: center;
+    min-height: 100px;
+    border-bottom: 1px solid var(--line);
+    transition: padding .35s ease, background .35s ease;
+}
+
+.capability:hover {
+    padding-left: 15px;
+    padding-right: 15px;
+    background: rgba(255,255,255,.025);
+}
+
+.capability-index {
+    color: var(--dim);
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+}
+
+.capability-name {
+    font-size: 20px;
+    letter-spacing: -.025em;
+}
+
+.capability-description {
+    color: #696f79;
+    font-size: 11px;
+    text-align: right;
+}
+
+/* ─────────────────────────────────────────────
+   AETHER SYSTEM
+───────────────────────────────────────────── */
+
+.system {
+    background: #0b0d10;
+}
+
+.system-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+}
+
+.system-title {
+    font-size: clamp(48px, 6vw, 86px);
+    letter-spacing: -.07em;
+    line-height: .9;
+}
+
+.system-title span {
+    color: #676d76;
+}
+
+.system-copy {
+    margin-top: 35px;
+    max-width: 510px;
+    color: #858b94;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.architecture {
+    position: relative;
+    height: 560px;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.architecture::before,
+.architecture::after {
+    content: "";
+    position: absolute;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+}
+
+.architecture::before {
+    width: 420px;
+    height: 420px;
+}
+
+.architecture::after {
+    width: 300px;
+    height: 300px;
+}
+
+.aether-core {
+    position: relative;
+    z-index: 3;
+    width: 120px;
+    height: 120px;
+    border: 1px solid rgba(190,200,255,.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(45deg);
+    background: #0b0d10;
+}
+
+.aether-core span {
+    transform: rotate(-45deg);
+    font-size: 12px;
+    letter-spacing: .15em;
+    font-family: "DM Mono", monospace;
+}
+
+.system-node {
+    position: absolute;
+    padding: 13px 16px;
+    border: 1px solid var(--line2);
+    background: #0d0f12;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: .08em;
+    z-index: 4;
+}
+
+.node-one { top: 55px; left: 50%; transform: translateX(-50%); }
+.node-two { bottom: 55px; left: 20%; }
+.node-three { bottom: 55px; right: 20%; }
+
+.connection {
+    position: absolute;
+    width: 1px;
+    height: 100px;
+    background: linear-gradient(transparent, rgba(170,185,255,.45));
+}
+
+.connection.one {
+    top: 100px;
+}
+
+.connection.two {
+    bottom: 100px;
+    left: 38%;
+    transform: rotate(35deg);
+}
+
+.connection.three {
+    bottom: 100px;
+    right: 38%;
+    transform: rotate(-35deg);
+}
+
+/* ─────────────────────────────────────────────
+   MANIFESTO
+───────────────────────────────────────────── */
+
+.manifesto {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
+.manifesto-text {
+    max-width: 1200px;
+    font-size: clamp(50px, 7vw, 108px);
+    line-height: .94;
+    letter-spacing: -.07em;
+}
+
+.manifesto-text .muted {
+    color: #555b64;
+}
+
+.manifesto-text .accent-word {
+    color: var(--accent2);
+}
+
+/* ─────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────── */
+
+.footer {
+    border-top: 1px solid var(--line);
+    padding: 70px 0 35px;
+}
+
+.footer-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 50px;
+    padding-bottom: 100px;
+}
+
+.footer-brand {
+    font-size: clamp(50px, 7vw, 100px);
+    letter-spacing: -.08em;
+    font-weight: 600;
+}
+
+.footer-tagline {
+    color: #707680;
+    max-width: 300px;
+    line-height: 1.7;
+    font-size: 13px;
+    margin-top: 25px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.footer-column a {
+    color: #858a93;
+    font-size: 13px;
+    transition: color .2s ease;
+}
+
+.footer-column a:hover {
+    color: white;
+}
+
+.footer-column .heading {
+    color: #444a53;
+    margin-bottom: 8px;
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    color: #50555e;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+/* ─────────────────────────────────────────────
+   CURSOR GLOW
+───────────────────────────────────────────── */
+
+.cursor-glow {
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+        circle,
+        rgba(130,145,255,.055),
+        transparent 65%
+    );
+    transform: translate(-50%,-50%);
+    transition: opacity .3s;
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE
+───────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+
+    .container,
+    .nav-inner {
+        width: min(100% - 34px, var(--max));
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero {
+        padding-top: 130px;
+        min-height: 900px;
+    }
+
+    .hero-top {
+        margin-bottom: 30px;
+    }
+
+    .hero-title {
+        font-size: clamp(52px, 14vw, 100px);
+    }
+
+    .hero-title .indent {
+        margin-left: 0;
+    }
+
+    .hero-bottom {
+        grid-template-columns: 1fr;
+        margin-top: 55px;
+    }
+
+    .hero-cta {
+        justify-self: start;
+    }
+
+    .hero-grid {
+        width: 100vw;
+        height: 100vw;
+        right: -35%;
+        bottom: 0;
+        opacity: .2;
+    }
+
+    .section {
+        padding: 110px 0;
+    }
+
+    .intro,
+    .product-header,
+    .capabilities,
+    .system-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .product-title {
+        font-size: 19vw;
+    }
+
+    .vidclips-visual {
+        min-height: 560px;
+    }
+
+    .vc-content {
+        grid-template-columns: 1fr;
+    }
+
+    .vc-analysis {
+        display: none;
+    }
+
+    .vc-preview {
+        border-right: none;
+    }
+
+    .pipeline {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .pipeline-step {
+        min-height: 220px;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .pipeline-step:nth-child(2) {
+        border-right: none;
+    }
+
+    .architecture {
+        height: 450px;
+    }
+
+    .footer-main {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 550px) {
+
+    .nav {
+        height: 65px;
+    }
+
+    .nav-product {
+        padding: 8px 11px;
+    }
+
+    .hero {
+        min-height: 850px;
+    }
+
+    .hero-title {
+        font-size: 18vw;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .pipeline {
+        grid-template-columns: 1fr;
+    }
+
+    .pipeline-step {
+        border-right: none;
+    }
+
+    .capability {
+        grid-template-columns: 45px 1fr;
+    }
+
+    .capability-description {
+        display: none;
+    }
+
+    .architecture {
+        height: 380px;
+    }
+
+    .architecture::before {
+        width: 280px;
+        height: 280px;
+    }
+
+    .architecture::after {
+        width: 190px;
+        height: 190px;
+    }
+
+    .aether-core {
+        width: 85px;
+        height: 85px;
+    }
+
+    .node-one {
+        top: 35px;
+    }
+
+    .node-two {
+        bottom: 35px;
+        left: 8%;
+    }
+
+    .node-three {
+        bottom: 35px;
+        right: 8%;
+    }
+
+    .footer-main {
+        grid-template-columns: 1fr;
+        padding-bottom: 70px;
+    }
+
+    .footer-brand {
+        grid-column: auto;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+
+        <a href="#" class="brand">
+
+            <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+                <rect x="10" y="10" width="20" height="20"
+                      transform="rotate(45 20 20)"
+                      stroke="currentColor"
+                      stroke-width="1.4"/>
+                <path d="M20 7V33M7 20H33"
+                      stroke="currentColor"
+                      stroke-width=".7"
+                      opacity=".5"/>
+            </svg>
+
+            <span class="brand-name">AETHER</span>
+
+        </a>
+
+        <div class="nav-links">
+            <a href="#product">Product</a>
+            <a href="#technology">Technology</a>
+            <a href="#system">Aether</a>
+            <a href="#about">About</a>
+        </div>
+
+        <div class="nav-right">
+            <a href="#product" class="nav-product">
+                VIDCLIPS ↗
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+
+    <div class="container">
+
+        <div class="hero-top">
+            <div class="mono label">AETHER / SOFTWARE STUDIO</div>
+            <div class="mono hero-location">01 — 2026</div>
+        </div>
+
+        <h1 class="hero-title reveal">
+            <span>We build</span>
+            <span class="indent thin">software for</span>
+            <span>what comes next<span class="accent">.</span></span>
+        </h1>
+
+        <div class="hero-bottom reveal">
+
+            <p class="hero-description">
+                Aether is an independent technology company building
+                intelligent software around the way people create,
+                understand and work with digital information.
+            </p>
+
+            <div class="hero-cta">
+                <a href="#product" class="button">
+                    <span>Explore Aether</span>
+                    <span>↘</span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="hero-grid">
+        <div class="grid-lines"></div>
+        <div class="orbit"></div>
+        <div class="orbit two"></div>
+        <div class="orbit three"></div>
+        <div class="core"></div>
+    </div>
+
+</section>
+
+
+<!-- INTRO -->
+<section class="section">
+
+    <div class="container intro">
+
+        <div class="mono section-number reveal">
+            00 / THE IDEA
+        </div>
+
+        <div class="reveal">
+            <h2 class="intro-title">
+                Technology should make
+                complex things <em>understandable.</em>
+                <br><br>
+                Not louder.
+                Not heavier.
+                <br>
+                <span class="accent">Smarter.</span>
+            </h2>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PRODUCT -->
+<section class="section" id="product">
+
+    <div class="container">
+
+        <div class="product-header reveal">
+
+            <div class="product-meta">
+                <div class="mono label">AETHER / PRODUCTS</div>
+                <strong>01</strong>
+                <div class="mono label">FIRST PRODUCT</div>
+            </div>
+
+            <div>
+                <h2 class="product-title">
+                    VidClips
+                    <small>Understand video at a deeper level.</small>
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="vidclips-visual reveal">
+
+            <div class="vc-top">
+                <div class="vc-brand">
+                    VIDCLIPS
+                </div>
+
+                <div class="vc-status">
+                    <span class="status-dot"></span>
+                    ANALYSIS ENGINE
+                </div>
+            </div>
+
+            <div class="vc-content">
+
+                <div class="vc-preview">
+
+                    <div class="preview-image">
+
+                        <div class="preview-label">
+                            SCENE / 04 — STRUCTURAL VIEW
+                        </div>
+
+                        <div class="scene-shape scene-one"></div>
+                        <div class="scene-shape scene-two"></div>
+                        <div class="scene-shape scene-three"></div>
+
+                        <div class="object-point point-one"></div>
+                        <div class="object-point point-two"></div>
+                        <div class="object-point point-three"></div>
+                        <div class="object-point point-four"></div>
+
+                        <div class="scan"></div>
+
+                    </div>
+
+                    <div class="timeline">
+                        <div class="timeline-block active"></div>
+                        <div class="timeline-block"></div>
+                        <div class="timeline-block"></div>
+                        <div class="timeline-block active"></div>
+                        <div class="timeline-block"></div>
+                        <div class="timeline-block"></div>
+                        <div class="timeline-block active"></div>
+                        <div class="timeline-block"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="vc-analysis">
+
+                    <div class="mono analysis-title">
+                        VIDEO INTELLIGENCE
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Scenes</span>
+                            <span class="analysis-value">ACTIVE</span>
+                        </div>
+                        <div class="analysis-line">
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Objects</span>
+                            <span class="analysis-value">TRACKED</span>
+                        </div>
+                        <div class="analysis-line">
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Motion</span>
+                            <span class="analysis-value">MAPPED</span>
+                        </div>
+                        <div class="analysis-line">
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Depth</span>
+                            <span class="analysis-value">ESTIMATED</span>
+                        </div>
+                        <div class="analysis-line">
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Text</span>
+                            <span class="analysis-value">EXTRACTED</span>
+                        </div>
+                        <div class="analysis-line">
+                            <span></span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="product-description reveal">
+            VidClips explores a different way to work with video:
+            instead of treating footage as a flat file, it analyzes
+            the structure inside it—scenes, motion, objects, text,
+            depth, color and audio—turning visual information into
+            something machines and creators can understand.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PIPELINE -->
+<section class="section" id="technology">
+
+    <div class="container">
+
+        <div class="pipeline-intro reveal">
+
+            <div class="mono label">02 / FROM FOOTAGE TO STRUCTURE</div>
+
+            <h2 class="pipeline-title">
+                A video is more than
+                a sequence of frames.
+            </h2>
+
+        </div>
+
+
+        <div class="pipeline reveal">
+
+            <div class="pipeline-step">
+                <span class="step-number">01</span>
+                <span class="step-arrow">↗</span>
+                <span class="step-name">VIDEO</span>
+            </div>
+
+            <div class="pipeline-step">
+                <span class="step-number">02</span>
+                <span class="step-arrow">↗</span>
+                <span class="step-name">ANALYZE</span>
+            </div>
+
+            <div class="pipeline-step">
+                <span class="step-number">03</span>
+                <span class="step-arrow">↗</span>
+                <span class="step-name">STRUCTURE</span>
+            </div>
+
+            <div class="pipeline-step">
+                <span class="step-number">04</span>
+                <span class="step-arrow">↗</span>
+                <span class="step-name">INTELLIGENCE</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CAPABILITIES -->
+<section class="section">
+
+    <div class="container capabilities">
+
+        <div class="reveal">
+
+            <div class="mono label">
+                03 / WHAT VIDCLIPS SEES
+            </div>
+
+            <h2 class="capability-heading">
+                Turning pixels
+                into <span>structure.</span>
+            </h2>
+
+        </div>
+
+
+        <div class="capability-list reveal">
+
+            <div class="capability">
+                <span class="capability-index">01</span>
+                <span class="capability-name">Scenes</span>
+                <span class="capability-description">SEGMENTATION</span>
+            </div>
+
+            <div class="capability">
+                <span class="capability-index">02</span>
+                <span class="capability-name">Camera</span>
+                <span class="capability-description">MOTION</span>
+            </div>
+
+            <div class="capability">
+                <span class="capability-index">03</span>
+                <span class="capability-name">Objects</span>
+                <span class="capability-description">DETECTION</span>
+            </div>
+
+            <div class="capability">
+                <span class="capability-index">04</span>
+                <span class="capability-name">Text</span>
+                <span class="capability-description">OCR</span>
+            </div>
+
+            <div class="capability">
+                <span class="capability-index">05</span>
+                <span class="capability-name">Depth</span>
+                <span class="capability-description">ESTIMATION</span>
+            </div>
+
+            <div class="capability">
+                <span class="capability-index">06</span>
+                <span class="capability-name">Color</span>
+                <span class="capability-description">ANALYSIS</span>
+            </div>
+
+            <div class="capability">
+                <span class="capability-index">07</span>
+                <span class="capability-name">Audio</span>
+                <span class="capability-description">SIGNAL</span>
+            </div>
+
+            <div class="capability">
+                <span class="capability-index">08</span>
+                <span class="capability-name">Motion</span>
+                <span class="capability-description">TRACKING</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- AETHER SYSTEM -->
+<section class="section system" id="system">
+
+    <div class="container system-grid">
+
+        <div class="reveal">
+
+            <div class="mono label">
+                04 / THE AETHER SYSTEM
+            </div>
+
+            <h2 class="system-title">
+                One company.
+                <br>
+                Many <span>directions.</span>
+            </h2>
+
+            <p class="system-copy">
+                VidClips is the first layer of Aether. The long-term
+                idea is larger: build a family of focused software
+                products that share the same philosophy of intelligent,
+                useful technology.
+            </p>
+
+        </div>
+
+
+        <div class="architecture reveal">
+
+            <div class="system-node node-one">
+                AETHER / CORE
+            </div>
+
+            <div class="system-node node-two">
+                VIDCLIPS / 01
+            </div>
+
+            <div class="system-node node-three">
+                FUTURE / 02+
+            </div>
+
+            <div class="connection one"></div>
+            <div class="connection two"></div>
+            <div class="connection three"></div>
+
+            <div class="aether-core">
+                <span>AETHER</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- MANIFESTO -->
+<section class="section manifesto" id="about">
+
+    <div class="container">
+
+        <div class="mono label reveal">
+            05 / WHY AETHER
+        </div>
+
+        <h2 class="manifesto-text reveal">
+            We don't want to build
+            <span class="muted">more software.</span>
+            <br><br>
+            We want to build
+            software that makes
+            <span class="accent-word">more possible.</span>
+        </h2>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="footer-main">
+
+            <div>
+                <div class="footer-brand">
+                    AETHER
+                </div>
+
+                <p class="footer-tagline">
+                    Independent software for the next generation
+                    of digital creation and intelligence.
+                </p>
+            </div>
+
+
+            <div class="footer-column">
+
+                <span class="mono heading">
+                    EXPLORE
+                </span>
+
+                <a href="#product">VidClips</a>
+                <a href="#technology">Technology</a>
+                <a href="#system">Aether</a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <span class="mono heading">
+                    CONNECT
+                </span>
+
+                <a href="https://github.com/lakshya4567/VidClips"
+                   target="_blank">
+                    GitHub ↗
+                </a>
+
+                <a href="mailto:hello@aether.dev">
+                    Contact ↗
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 AETHER
+            </span>
+
+            <span>
+                BUILT FOR WHAT COMES NEXT
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</main>
+
+
+<script>
+
+/* ─────────────────────────────────────────────
+   NAVIGATION BLUR
+───────────────────────────────────────────── */
+
+const nav = document.getElementById("nav");
+
+window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 30) {
+        nav.classList.add("scrolled");
+    } else {
+        nav.classList.remove("scrolled");
+    }
+
+});
+
+
+/* ─────────────────────────────────────────────
+   SCROLL REVEALS
+───────────────────────────────────────────── */
+
+const observer = new IntersectionObserver(
+    entries => {
+
+        entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+
+        });
+
+    },
+    {
+        threshold: .12
+    }
+);
+
+document.querySelectorAll(".reveal").forEach(el => {
+    observer.observe(el);
+});
+
+
+/* ─────────────────────────────────────────────
+   CURSOR LIGHT
+───────────────────────────────────────────── */
+
+const glow = document.getElementById("cursorGlow");
+
+let mouseX = 0;
+let mouseY = 0;
+let glowX = 0;
+let glowY = 0;
+
+window.addEventListener("mousemove", e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateGlow() {
+
+    glowX += (mouseX - glowX) * .08;
+    glowY += (mouseY - glowY) * .08;
+
+    glow.style.left = glowX + "px";
+    glow.style.top = glowY + "px";
+
+    requestAnimationFrame(animateGlow);
+}
+
+animateGlow();
+
+
+/* ─────────────────────────────────────────────
+   SMOOTH ANCHOR OFFSET
+───────────────────────────────────────────── */
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+
+    link.addEventListener("click", e => {
+
+        const id = link.getAttribute("href");
+
+        if (id === "#") return;
+
+        const target = document.querySelector(id);
+
+        if (!target) return;
+
+        e.preventDefault();
+
+        const offset = 80;
+
+        window.scrollTo({
+            top: target.offsetTop - offset,
+            behavior: "smooth"
+        });
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
