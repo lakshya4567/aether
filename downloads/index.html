@@ -3,338 +3,707 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aether — Storage</title>
+  <title>Aether // Cloud Storage</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Inter Font -->
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+            dark: {
+              bg: '#070a11',
+              card: 'rgba(15, 23, 42, 0.65)',
+              border: 'rgba(255, 255, 255, 0.08)',
+              hover: 'rgba(255, 255, 255, 0.03)'
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'glow': 'glow 4s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            glow: {
+              '0%': { opacity: '0.4', filter: 'blur(20px)' },
+              '100%': { opacity: '0.8', filter: 'blur(35px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    :root {
-      --bg: #090d16;
-      --card-bg: rgba(18, 24, 38, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --accent: #6366f1;
-      --accent-hover: #4f46e5;
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --glass: rgba(255, 255, 255, 0.03);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15), transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.08), transparent 40%);
+      background-color: #070a11;
+      color: #f3f4f6;
+      font-family: 'Inter', sans-serif;
     }
-
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .header h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .header p {
-      color: var(--text-muted);
-      margin-top: 8px;
-      font-size: 0.95rem;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 680px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.65);
       backdrop-filter: blur(16px);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .glass-input {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
-    .input-group {
-      display: flex;
-      gap: 10px;
+    .glass-input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
     }
-
-    input[type="password"] {
-      flex: 1;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 16px;
-      color: #fff;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
     }
-
-    input[type="password"]:focus {
-      border-color: var(--accent);
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
     }
-
-    .btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 20px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
     }
-
-    .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
-    .btn-secondary { background: var(--glass); border: 1px solid var(--border); }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); }
-
-    /* Drop Zone UI */
-    .drop-zone {
-      border: 2px dashed var(--border);
-      border-radius: 12px;
-      padding: 32px;
-      text-align: center;
-      background: var(--glass);
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-
-    .drop-zone:hover { border-color: var(--accent); }
-
-    .file-input-hidden { display: none; }
-
-    /* File List UI */
-    .file-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .file-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 18px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 0.9rem;
-    }
-
-    .file-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .file-name { font-weight: 500; color: var(--text); }
-    .file-size { font-size: 0.8rem; color: var(--text-muted); }
-
-    .download-link {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.85rem;
-      padding: 6px 12px;
-      border-radius: 6px;
-      background: rgba(99, 102, 241, 0.1);
-      transition: background 0.2s;
-    }
-
-    .download-link:hover { background: rgba(99, 102, 241, 0.2); }
-
-    .status {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 12px;
-      text-align: center;
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.5);
     }
   </style>
 </head>
-<body>
+<body class="min-h-screen relative overflow-x-hidden selection:bg-brand-500 selection:text-white pb-16">
 
-  <div class="header">
-    <h1>Aether Cloud</h1>
-    <p>Minimalist lightweight storage for your repository</p>
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl animate-glow"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl animate-glow" style="animation-delay: 2s;"></div>
+    <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl animate-glow" style="animation-delay: 1s;"></div>
   </div>
 
-  <div class="container">
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
     
-    <!-- Token Card -->
-    <div class="card">
-      <div class="card-title">Authentication</div>
-      <div class="input-group">
-        <input type="password" id="token" placeholder="Paste GitHub Personal Access Token">
-        <button class="btn" onclick="saveToken()">Save</button>
+    <!-- Top Bar Navigation -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-brand-500/30">
+          <i class="ph-bold ph-cloud-arrow-up text-xl text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-bold tracking-tight text-white">AETHER <span class="text-brand-500 font-normal">//</span> DRIVE</h1>
+            <span class="px-2 py-0.5 text-[10px] font-mono tracking-wide uppercase bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full">v1.0</span>
+          </div>
+          <p class="text-xs text-gray-400">Decentralized storage layer backed by GitHub Infrastructure</p>
+        </div>
       </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="flex items-center gap-4 bg-slate-900/40 p-2 rounded-2xl border border-white/5 backdrop-blur-md">
+        <div class="px-3 py-1.5 border-r border-white/10">
+          <p class="text-[10px] uppercase font-mono text-gray-400">Storage Used</p>
+          <div class="flex items-center gap-2">
+            <span id="storageUsedText" class="text-sm font-semibold text-white">0.0 MB</span>
+            <span class="text-xs text-gray-500">/ 1 GB</span>
+          </div>
+        </div>
+        <div class="px-3 py-1.5 border-r border-white/10">
+          <p class="text-[10px] uppercase font-mono text-gray-400">Total Files</p>
+          <p id="totalFilesCount" class="text-sm font-semibold text-white">0</p>
+        </div>
+        <div class="px-3 py-1.5">
+          <p class="text-[10px] uppercase font-mono text-gray-400">Status</p>
+          <div id="connectionBadge" class="flex items-center gap-1.5 text-xs text-amber-400 font-medium">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> Key Required
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Storage Capacity Bar -->
+    <div class="mt-4 w-full bg-slate-900/60 rounded-full h-1.5 overflow-hidden border border-white/5">
+      <div id="storageProgressBar" class="bg-gradient-to-r from-brand-500 to-indigo-400 h-full w-0 transition-all duration-500"></div>
     </div>
 
-    <!-- Upload Card -->
-    <div class="card">
-      <div class="card-title">Upload File</div>
-      <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
-        <p style="color: var(--text-muted);">Click to select or drag & drop a file here</p>
-        <input type="file" id="fileInput" class="file-input-hidden" onchange="handleFileSelect()">
-      </div>
-      <div id="fileSelectedName" style="margin-top: 10px; font-size: 0.85rem; color: #a5b4fc;"></div>
-      <button class="btn" style="width: 100%; margin-top: 14px;" onclick="uploadFile()">Upload File</button>
-      <div id="uploadStatus" class="status"></div>
-    </div>
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
 
-    <!-- Storage Card -->
-    <div class="card">
-      <div class="card-title">
-        <span>Uploaded Files</span>
-        <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;" onclick="fetchFiles()">Refresh</button>
-      </div>
-      <ul id="fileList" class="file-list">
-        <li class="file-item" style="color: var(--text-muted);">Loading files...</li>
-      </ul>
-    </div>
+      <!-- LEFT COLUMN: Key Management & Uploader -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
 
+        <!-- Access Token Card -->
+        <section class="glass-panel rounded-2xl p-6 shadow-xl">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <i class="ph-bold ph-key text-brand-400 text-lg"></i>
+              <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-200">Access Key</h2>
+            </div>
+            <span id="keyStatusTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">UNSET</span>
+          </div>
+
+          <div class="relative mb-3">
+            <input 
+              type="password" 
+              id="tokenInput" 
+              placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" 
+              class="w-full glass-input rounded-xl px-4 py-2.5 text-sm text-gray-100 placeholder-gray-500 focus:outline-none transition-all pr-10"
+            >
+            <button 
+              onclick="toggleTokenVisibility()" 
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
+              title="Toggle Visibility"
+            >
+              <i id="eyeIcon" class="ph-bold ph-eye"></i>
+            </button>
+          </div>
+
+          <div class="flex gap-2">
+            <button 
+              onclick="saveToken()" 
+              class="flex-1 bg-brand-600 hover:bg-brand-500 active:scale-[0.98] text-white font-medium text-xs py-2.5 px-4 rounded-xl transition-all shadow-lg shadow-brand-600/30 flex items-center justify-center gap-2"
+            >
+              <i class="ph-bold ph-floppy-disk"></i> Save Key
+            </button>
+            <button 
+              onclick="clearToken()" 
+              class="bg-white/5 hover:bg-rose-500/20 hover:border-rose-500/30 text-gray-300 hover:text-rose-300 border border-white/10 active:scale-[0.98] font-medium text-xs py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2"
+              title="Clear Key from LocalStorage"
+            >
+              <i class="ph-bold ph-trash"></i> Clear
+            </button>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-white/5 text-[11px] text-gray-400 flex items-center justify-between">
+            <span>Need a GitHub Token?</span>
+            <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" class="text-brand-400 hover:underline flex items-center gap-1 font-medium">
+              Generate PAT <i class="ph-bold ph-arrow-square-out"></i>
+            </a>
+          </div>
+        </section>
+
+        <section class="glass-panel rounded-2xl p-6 shadow-xl flex-1 flex flex-col">
+          <div class="flex items-center gap-2 mb-4">
+            <i class="ph-bold ph-upload-simple text-brand-400 text-lg"></i>
+            <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-200">Upload Media</h2>
+          </div>
+
+          <!-- Drop Area -->
+          <div 
+            id="dropZone"
+            onclick="document.getElementById('fileInput').click()"
+            ondragover="handleDragOver(event)"
+            ondragleave="handleDragLeave(event)"
+            ondrop="handleDrop(event)"
+            class="border-2 border-dashed border-white/10 hover:border-brand-500/50 rounded-xl p-8 text-center cursor-pointer transition-all bg-black/20 hover:bg-brand-500/5 flex flex-col items-center justify-center flex-1 min-h-[180px] group"
+          >
+            <input type="file" id="fileInput" class="hidden" onchange="handleFileSelect(event)">
+            <div class="w-12 h-12 rounded-full bg-white/5 group-hover:bg-brand-500/20 flex items-center justify-center mb-3 transition-colors">
+              <i class="ph-bold ph-cloud-arrow-up text-2xl text-gray-400 group-hover:text-brand-400 transition-colors"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-300 group-hover:text-white">Drag and drop files here</p>
+            <p class="text-xs text-gray-500 mt-1">or click to browse from device (Max ~50 MB)</p>
+          </div>
+
+          <!-- Selected File Details Preview -->
+          <div id="filePreview" class="hidden mt-4 p-3 bg-white/5 border border-white/10 rounded-xl">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3 overflow-hidden">
+                <i class="ph-bold ph-file-text text-xl text-brand-400 shrink-0"></i>
+                <div class="truncate">
+                  <p id="previewFileName" class="text-xs font-medium text-white truncate">filename.ext</p>
+                  <p id="previewFileSize" class="text-[10px] text-gray-400">0.0 KB</p>
+                </div>
+              </div>
+              <button onclick="clearSelectedFile()" class="text-gray-400 hover:text-rose-400 p-1">
+                <i class="ph-bold ph-x"></i>
+              </button>
+            </div>
+            
+            <!-- Upload Progress Bar -->
+            <div id="uploadProgressWrapper" class="hidden mt-3">
+              <div class="w-full bg-black/40 rounded-full h-1.5 overflow-hidden">
+                <div id="uploadProgressBar" class="bg-brand-500 h-full w-0 transition-all duration-300"></div>
+              </div>
+              <p id="uploadStatusText" class="text-[10px] text-gray-400 mt-1 text-right">Encrypting & Committing...</p>
+            </div>
+          </div>
+
+          <button 
+            id="uploadBtn"
+            onclick="uploadFile()" 
+            disabled
+            class="w-full mt-4 bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand-500 active:scale-[0.98] text-white font-medium text-xs py-3 px-4 rounded-xl transition-all shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2"
+          >
+            <i class="ph-bold ph-paper-plane-tilt"></i> Commit File to Storage
+          </button>
+        </section>
+
+      </div>
+
+      <div class="lg:col-span-7">
+        <section class="glass-panel rounded-2xl p-6 shadow-xl h-full flex flex-col">
+          
+          <!-- Storage Explorer Header -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div class="flex items-center gap-2">
+              <i class="ph-bold ph-folder-open text-brand-400 text-lg"></i>
+              <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-200">Repository Files</h2>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <!-- Search Bar -->
+              <div class="relative flex-1 sm:w-48">
+                <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                <input 
+                  type="text" 
+                  id="searchInput" 
+                  onkeyup="filterFiles()" 
+                  placeholder="Search files..." 
+                  class="w-full glass-input rounded-xl pl-8 pr-3 py-1.5 text-xs text-gray-100 placeholder-gray-500 focus:outline-none"
+                >
+              </div>
+
+              <!-- Refresh Button -->
+              <button 
+                onclick="fetchFiles()" 
+                id="refreshBtn"
+                class="p-2 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 text-gray-300 hover:text-white transition"
+                title="Refresh Storage"
+              >
+                <i id="refreshIcon" class="ph-bold ph-arrows-clockwise text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- File Container -->
+          <div class="flex-1 overflow-y-auto max-h-[520px] pr-1">
+            <ul id="fileList" class="flex flex-col gap-2">
+              <!-- Dynamic Files inserted here -->
+            </ul>
+          </div>
+
+        </section>
+      </div>
+
+    </main>
   </div>
+
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
     const REPO_OWNER = 'lakshya4567';
     const REPO_NAME = 'aether-website';
     const FOLDER_PATH = 'downloads/files';
 
-    document.getElementById('token').value = localStorage.getItem('gh_token') || '';
+    let allFiles = [];
+    let selectedFile = null;
 
+    // Initialize page
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedToken = localStorage.getItem('gh_token');
+      if (savedToken) {
+        document.getElementById('tokenInput').value = savedToken;
+        updateKeyStatus(true);
+      } else {
+        updateKeyStatus(false);
+      }
+      fetchFiles();
+    });
+
+    // Toggle token password visibility
+    function toggleTokenVisibility() {
+      const input = document.getElementById('tokenInput');
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'ph-bold ph-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'ph-bold ph-eye';
+      }
+    }
+
+    // Key management
     function saveToken() {
-      const token = document.getElementById('token').value;
+      const token = document.getElementById('tokenInput').value.trim();
+      if (!token) {
+        showToast('Please enter a valid Personal Access Token', 'error');
+        return;
+      }
       localStorage.setItem('gh_token', token);
-      alert('Token saved locally!');
+      updateKeyStatus(true);
+      showToast('Key stored securely in localStorage', 'success');
       fetchFiles();
     }
 
-    function getToken() {
-      return localStorage.getItem('gh_token');
+    function clearToken() {
+      localStorage.removeItem('gh_token');
+      document.getElementById('tokenInput').value = '';
+      updateKeyStatus(false);
+      showToast('Token cleared from local device', 'info');
+      fetchFiles();
     }
 
-    function handleFileSelect() {
-      const input = document.getElementById('fileInput');
-      const display = document.getElementById('fileSelectedName');
-      if (input.files.length) {
-        display.innerText = `Selected: ${input.files[0].name}`;
+    function updateKeyStatus(isSet) {
+      const tag = document.getElementById('keyStatusTag');
+      const badge = document.getElementById('connectionBadge');
+
+      if (isSet) {
+        tag.innerText = 'SAVED';
+        tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
+        badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Authenticated';
+        badge.className = 'flex items-center gap-1.5 text-xs text-emerald-400 font-medium';
+      } else {
+        tag.innerText = 'UNSET';
+        tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20';
+        badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> Key Required';
+        badge.className = 'flex items-center gap-1.5 text-xs text-amber-400 font-medium';
       }
+    }
+
+    // Drag and Drop handlers
+    function handleDragOver(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.add('border-brand-500', 'bg-brand-500/10');
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.remove('border-brand-500', 'bg-brand-500/10');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.remove('border-brand-500', 'bg-brand-500/10');
+      if (e.dataTransfer.files.length) {
+        setFileForUpload(e.dataTransfer.files[0]);
+      }
+    }
+
+    function handleFileSelect(e) {
+      if (e.target.files.length) {
+        setFileForUpload(e.target.files[0]);
+      }
+    }
+
+    function setFileForUpload(file) {
+      selectedFile = file;
+      document.getElementById('previewFileName').innerText = file.name;
+      document.getElementById('previewFileSize').innerText = formatBytes(file.size);
+      document.getElementById('filePreview').classList.remove('hidden');
+      document.getElementById('uploadBtn').disabled = false;
+    }
+
+    function clearSelectedFile() {
+      selectedFile = null;
+      document.getElementById('fileInput').value = '';
+      document.getElementById('filePreview').classList.add('hidden');
+      document.getElementById('uploadProgressWrapper').classList.add('hidden');
+      document.getElementById('uploadBtn').disabled = true;
     }
 
     async function fetchFiles() {
-      const fileList = document.getElementById('fileList');
-      fileList.innerHTML = '<li class="file-item" style="color: var(--text-muted);">Fetching list...</li>';
+      const listEl = document.getElementById('fileList');
+      const refreshIcon = document.getElementById('refreshIcon');
+      refreshIcon.classList.add('animate-spin');
+
+      listEl.innerHTML = `
+        <div class="py-12 text-center text-gray-500">
+          <i class="ph-bold ph-spinner text-2xl animate-spin text-brand-500 mb-2"></i>
+          <p class="text-xs">Fetching repository contents...</p>
+        </div>
+      `;
 
       try {
         const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FOLDER_PATH}`);
-        if (!response.ok) throw new Error('No files uploaded yet.');
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            allFiles = [];
+            renderFiles([]);
+            updateStorageMetrics(0, 0);
+            return;
+          }
+          throw new Error(`GitHub API Error: ${response.statusText}`);
+        }
 
         const data = await response.json();
-        fileList.innerHTML = '';
+        allFiles = data.filter(item => item.type === 'file');
+        
+        renderFiles(allFiles);
+        calculateMetrics(allFiles);
 
-        data.forEach(file => {
-          if (file.type === 'file') {
-            const li = document.createElement('li');
-            li.className = 'file-item';
-            li.innerHTML = `
-              <div class="file-info">
-                <span class="file-name">${file.name}</span>
-                <span class="file-size">${(file.size / 1024).toFixed(1)} KB</span>
-              </div>
-              <a class="download-link" href="${file.download_url}" download target="_blank">Download</a>
-            `;
-            fileList.appendChild(li);
-          }
-        });
       } catch (err) {
-        fileList.innerHTML = `<li class="file-item" style="color: var(--text-muted);">${err.message}</li>`;
+        listEl.innerHTML = `
+          <div class="py-12 text-center text-rose-400">
+            <i class="ph-bold ph-warning-circle text-2xl mb-2"></i>
+            <p class="text-xs font-medium">${err.message}</p>
+          </div>
+        `;
+      } finally {
+        refreshIcon.classList.remove('animate-spin');
       }
+    }
+
+    function calculateMetrics(files) {
+      const totalBytes = files.reduce((acc, file) => acc + (file.size || 0), 0);
+      updateStorageMetrics(totalBytes, files.length);
+    }
+
+    function updateStorageMetrics(totalBytes, count) {
+      const formattedSize = (totalBytes / (1024 * 1024)).toFixed(1);
+      document.getElementById('storageUsedText').innerText = `${formattedSize} MB`;
+      document.getElementById('totalFilesCount').innerText = count;
+
+      // 1GB limit = 1073741824 bytes
+      const percentage = Math.min((totalBytes / 1073741824) * 100, 100).toFixed(1);
+      document.getElementById('storageProgressBar').style.width = `${Math.max(percentage, 1)}%`;
+    }
+
+    function renderFiles(files) {
+      const listEl = document.getElementById('fileList');
+      if (files.length === 0) {
+        listEl.innerHTML = `
+          <div class="py-12 text-center text-gray-500 border border-dashed border-white/5 rounded-xl">
+            <i class="ph-bold ph-folder-open text-3xl mb-2 text-gray-600"></i>
+            <p class="text-xs font-medium">No files stored yet</p>
+            <p class="text-[10px] text-gray-600 mt-0.5">Upload a file to get started</p>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = files.map(file => {
+        const iconClass = getFileIcon(file.name);
+        return `
+          <li class="glass-panel hover:bg-white/[0.04] p-3.5 rounded-xl transition-all flex items-center justify-between gap-3 group border border-white/5">
+            <div class="flex items-center gap-3 overflow-hidden">
+              <div class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-brand-400 group-hover:border-brand-500/30 transition-colors">
+                <i class="ph-bold ${iconClass} text-lg"></i>
+              </div>
+              <div class="truncate">
+                <p class="text-xs font-medium text-gray-200 truncate group-hover:text-white transition-colors">${file.name}</p>
+                <p class="text-[10px] font-mono text-gray-500 mt-0.5">${formatBytes(file.size)}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 shrink-0">
+              <a 
+                href="${file.download_url}" 
+                download 
+                target="_blank" 
+                class="p-2 bg-brand-500/10 hover:bg-brand-500 text-brand-400 hover:text-white rounded-lg transition-all text-xs flex items-center gap-1"
+                title="Download File"
+              >
+                <i class="ph-bold ph-download-simple"></i>
+              </a>
+              <button 
+                onclick="copyToClipboard('${file.download_url}')" 
+                class="p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all text-xs"
+                title="Copy Direct Link"
+              >
+                <i class="ph-bold ph-link"></i>
+              </button>
+              <button 
+                onclick="deleteFile('${file.path}', '${file.sha}', '${file.name}')" 
+                class="p-2 bg-white/5 hover:bg-rose-500/20 text-gray-400 hover:text-rose-400 rounded-lg transition-all text-xs"
+                title="Delete File"
+              >
+                <i class="ph-bold ph-trash"></i>
+              </button>
+            </div>
+          </li>
+        `;
+      }).join('');
+    }
+
+    function filterFiles() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allFiles.filter(f => f.name.toLowerCase().includes(query));
+      renderFiles(filtered);
     }
 
     async function uploadFile() {
-      const token = getToken();
+      const token = localStorage.getItem('gh_token');
       if (!token) {
-        alert('Please enter and save a GitHub token first.');
+        showToast('Save a valid GitHub access token first!', 'warning');
         return;
       }
 
-      const fileInput = document.getElementById('fileInput');
-      const status = document.getElementById('uploadStatus');
-
-      if (!fileInput.files.length) {
-        alert('Please select a file.');
+      if (!selectedFile) {
+        showToast('Please select a file to upload.', 'warning');
         return;
       }
 
-      const file = fileInput.files[0];
-      status.innerText = 'Uploading...';
+      const uploadBtn = document.getElementById('uploadBtn');
+      const progressWrapper = document.getElementById('uploadProgressWrapper');
+      const progressBar = document.getElementById('uploadProgressBar');
 
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async function () {
-        const base64Content = reader.result.split(',')[1];
-        const filePath = `${FOLDER_PATH}/${file.name}`;
+      uploadBtn.disabled = true;
+      progressWrapper.classList.remove('hidden');
+      progressBar.style.width = '30%';
 
-        try {
-          const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `token ${token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              message: `Upload ${file.name} via Aether UI`,
-              content: base64Content
-            })
-          });
+      try {
+        const base64Content = await convertFileToBase64(selectedFile);
+        progressBar.style.width = '70%';
 
-          if (response.ok) {
-            status.innerText = 'Upload successful!';
-            fileInput.value = '';
-            document.getElementById('fileSelectedName').innerText = '';
-            fetchFiles();
-          } else {
-            const errorData = await response.json();
-            status.innerText = `Error: ${errorData.message}`;
-          }
-        } catch (err) {
-          status.innerText = `Error: ${err.message}`;
+        const filePath = `${FOLDER_PATH}/${selectedFile.name}`;
+
+        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Upload ${selectedFile.name} via Aether Drive`,
+            content: base64Content
+          })
+        });
+
+        progressBar.style.width = '100%';
+
+        if (response.ok) {
+          showToast(`Successfully uploaded ${selectedFile.name}`, 'success');
+          clearSelectedFile();
+          fetchFiles();
+        } else {
+          const error = await response.json();
+          throw new Error(error.message || 'Upload failed');
         }
-      };
+
+      } catch (err) {
+        showToast(`Upload failed: ${err.message}`, 'error');
+      } finally {
+        uploadBtn.disabled = false;
+        setTimeout(() => {
+          progressWrapper.classList.add('hidden');
+          progressBar.style.width = '0%';
+        }, 1000);
+      }
     }
 
-    fetchFiles();
+    // Delete file using GitHub REST API
+    async function deleteFile(path, sha, filename) {
+      const token = localStorage.getItem('gh_token');
+      if (!token) {
+        showToast('Save a GitHub Access Token to enable deletion.', 'warning');
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete "${filename}"?`)) return;
+
+      try {
+        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `Delete ${filename} via Aether Drive`,
+            sha: sha
+          })
+        });
+
+        if (response.ok) {
+          showToast(`Deleted ${filename}`, 'info');
+          fetchFiles();
+        } else {
+          const error = await response.json();
+          throw new Error(error.message || 'Deletion failed');
+        }
+      } catch (err) {
+        showToast(`Error: ${err.message}`, 'error');
+      }
+    }
+
+    // Helpers
+    function convertFileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    function formatBytes(bytes, decimals = 1) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    function getFileIcon(filename) {
+      const ext = filename.split('.').pop().toLowerCase();
+      if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) return 'ph-image';
+      if (['mp4', 'webm', 'mov', 'mkv'].includes(ext)) return 'ph-film-strip';
+      if (['mp3', 'wav', 'ogg'].includes(ext)) return 'ph-music-notes';
+      if (['pdf', 'doc', 'docx', 'txt'].includes(ext)) return 'ph-file-pdf';
+      if (['zip', 'rar', 'tar', 'gz', '7z'].includes(ext)) return 'ph-archive';
+      if (['js', 'ts', 'html', 'css', 'json', 'py', 'cpp'].includes(ext)) return 'ph-code';
+      return 'ph-file';
+    }
+
+    function copyToClipboard(text) {
+      const tempInput = document.createElement('input');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast('Download link copied to clipboard!', 'info');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      let borderClass = 'border-brand-500/30';
+      let icon = 'ph-info';
+
+      if (type === 'success') {
+        borderClass = 'border-emerald-500/30 text-emerald-300';
+        icon = 'ph-check-circle';
+      } else if (type === 'error') {
+        borderClass = 'border-rose-500/30 text-rose-300';
+        icon = 'ph-x-circle';
+      } else if (type === 'warning') {
+        borderClass = 'border-amber-500/30 text-amber-300';
+        icon = 'ph-warning';
+      }
+
+      toast.className = `glass-panel ${borderClass} px-4 py-3 rounded-xl text-xs font-medium text-gray-200 shadow-2xl flex items-center gap-2.5 transition-all duration-300 pointer-events-auto transform translate-y-2 opacity-0`;
+      toast.innerHTML = `<i class="ph-bold ${icon} text-base shrink-0"></i> <span>${message}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
   </script>
 </body>
 </html>
