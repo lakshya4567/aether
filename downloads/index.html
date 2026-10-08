@@ -3,85 +3,234 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aether Cloud Storage</title>
+  <title>Aether — Storage</title>
   <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(18, 24, 38, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --glass: rgba(255, 255, 255, 0.03);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 0 20px;
-      background: #0d1117;
-      color: #c9d1d9;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.08), transparent 40%);
     }
-    h1, h2 { color: #f0f6fc; }
-    .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
     }
-    input[type="text"], input[type="password"], input[type="file"] {
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header p {
+      color: var(--text-muted);
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+
+    .container {
       width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      background: #0d1117;
-      border: 1px solid #30363d;
-      color: #f0f6fc;
-      border-radius: 6px;
-      box-sizing: border-box;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-    button {
-      background: #238636;
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="password"] {
+      flex: 1;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="password"]:focus {
+      border-color: var(--accent);
+    }
+
+    .btn {
+      background: var(--accent);
       color: white;
       border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
-      font-weight: bold;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    button:hover { background: #2ea043; }
-    ul { list-style: none; padding: 0; }
-    li {
+
+    .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-secondary { background: var(--glass); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); }
+
+    /* Drop Zone UI */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      background: var(--glass);
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .drop-zone:hover { border-color: var(--accent); }
+
+    .file-input-hidden { display: none; }
+
+    /* File List UI */
+    .file-list {
+      list-style: none;
       display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      border-bottom: 1px solid #30363d;
+      flex-direction: column;
+      gap: 10px;
     }
-    a { color: #58a6ff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .status { margin-top: 10px; font-size: 0.9em; }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+
+    .file-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .file-name { font-weight: 500; color: var(--text); }
+    .file-size { font-size: 0.8rem; color: var(--text-muted); }
+
+    .download-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(99, 102, 241, 0.1);
+      transition: background 0.2s;
+    }
+
+    .download-link:hover { background: rgba(99, 102, 241, 0.2); }
+
+    .status {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Aether Storage</h1>
-
-  <div class="card">
-    <h2>1. Access Token</h2>
-    <input type="password" id="token" placeholder="Paste GitHub Fine-Grained Token or PAT">
-    <button onclick="saveToken()">Save Token</button>
+  <div class="header">
+    <h1>Aether Cloud</h1>
+    <p>Minimalist lightweight storage for your repository</p>
   </div>
 
-  <div class="card">
-    <h2>2. Upload File</h2>
-    <input type="file" id="fileInput">
-    <button onclick="uploadFile()">Upload</button>
-    <div id="uploadStatus" class="status"></div>
-  </div>
+  <div class="container">
+    
+    <!-- Token Card -->
+    <div class="card">
+      <div class="card-title">Authentication</div>
+      <div class="input-group">
+        <input type="password" id="token" placeholder="Paste GitHub Personal Access Token">
+        <button class="btn" onclick="saveToken()">Save</button>
+      </div>
+    </div>
 
-  <div class="card">
-    <h2>3. Stored Files</h2>
-    <button onclick="fetchFiles()">Refresh File List</button>
-    <ul id="fileList"></ul>
+    <!-- Upload Card -->
+    <div class="card">
+      <div class="card-title">Upload File</div>
+      <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+        <p style="color: var(--text-muted);">Click to select or drag & drop a file here</p>
+        <input type="file" id="fileInput" class="file-input-hidden" onchange="handleFileSelect()">
+      </div>
+      <div id="fileSelectedName" style="margin-top: 10px; font-size: 0.85rem; color: #a5b4fc;"></div>
+      <button class="btn" style="width: 100%; margin-top: 14px;" onclick="uploadFile()">Upload File</button>
+      <div id="uploadStatus" class="status"></div>
+    </div>
+
+    <!-- Storage Card -->
+    <div class="card">
+      <div class="card-title">
+        <span>Uploaded Files</span>
+        <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;" onclick="fetchFiles()">Refresh</button>
+      </div>
+      <ul id="fileList" class="file-list">
+        <li class="file-item" style="color: var(--text-muted);">Loading files...</li>
+      </ul>
+    </div>
+
   </div>
 
   <script>
     const REPO_OWNER = 'lakshya4567';
     const REPO_NAME = 'aether-website';
-    const FOLDER_PATH = 'downloads/files'; // Subfolder where uploaded files will live
+    const FOLDER_PATH = 'downloads/files';
 
-    // Load saved token on startup
     document.getElementById('token').value = localStorage.getItem('gh_token') || '';
 
     function saveToken() {
@@ -95,14 +244,21 @@
       return localStorage.getItem('gh_token');
     }
 
-    // Fetch list of files in the downloads/files directory
+    function handleFileSelect() {
+      const input = document.getElementById('fileInput');
+      const display = document.getElementById('fileSelectedName');
+      if (input.files.length) {
+        display.innerText = `Selected: ${input.files[0].name}`;
+      }
+    }
+
     async function fetchFiles() {
       const fileList = document.getElementById('fileList');
-      fileList.innerHTML = 'Loading...';
+      fileList.innerHTML = '<li class="file-item" style="color: var(--text-muted);">Fetching list...</li>';
 
       try {
         const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FOLDER_PATH}`);
-        if (!response.ok) throw new Error('No files found or invalid repository path.');
+        if (!response.ok) throw new Error('No files uploaded yet.');
 
         const data = await response.json();
         fileList.innerHTML = '';
@@ -110,23 +266,26 @@
         data.forEach(file => {
           if (file.type === 'file') {
             const li = document.createElement('li');
+            li.className = 'file-item';
             li.innerHTML = `
-              <span>${file.name} (${(file.size / 1024).toFixed(1)} KB)</span>
-              <a href="${file.download_url}" download target="_blank">Download</a>
+              <div class="file-info">
+                <span class="file-name">${file.name}</span>
+                <span class="file-size">${(file.size / 1024).toFixed(1)} KB</span>
+              </div>
+              <a class="download-link" href="${file.download_url}" download target="_blank">Download</a>
             `;
             fileList.appendChild(li);
           }
         });
       } catch (err) {
-        fileList.innerHTML = `<li>${err.message}</li>`;
+        fileList.innerHTML = `<li class="file-item" style="color: var(--text-muted);">${err.message}</li>`;
       }
     }
 
-    // Upload selected file to GitHub
     async function uploadFile() {
       const token = getToken();
       if (!token) {
-        alert('Please enter and save a GitHub Personal Access Token first.');
+        alert('Please enter and save a GitHub token first.');
         return;
       }
 
@@ -134,7 +293,7 @@
       const status = document.getElementById('uploadStatus');
 
       if (!fileInput.files.length) {
-        alert('Please select a file to upload.');
+        alert('Please select a file.');
         return;
       }
 
@@ -144,7 +303,6 @@
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async function () {
-        // Extract base64 payload from data URL
         const base64Content = reader.result.split(',')[1];
         const filePath = `${FOLDER_PATH}/${file.name}`;
 
@@ -156,7 +314,7 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              message: `Upload ${file.name} via Aether Web Interface`,
+              message: `Upload ${file.name} via Aether UI`,
               content: base64Content
             })
           });
@@ -164,10 +322,11 @@
           if (response.ok) {
             status.innerText = 'Upload successful!';
             fileInput.value = '';
+            document.getElementById('fileSelectedName').innerText = '';
             fetchFiles();
           } else {
             const errorData = await response.json();
-            status.innerText = `Upload failed: ${errorData.message}`;
+            status.innerText = `Error: ${errorData.message}`;
           }
         } catch (err) {
           status.innerText = `Error: ${err.message}`;
@@ -175,7 +334,6 @@
       };
     }
 
-    // Load initial file list if directory exists
     fetchFiles();
   </script>
 </body>
