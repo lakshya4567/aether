@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,9 +32,7 @@
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
     background: var(--bg);
@@ -52,24 +51,11 @@ body::before {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
 
-::selection {
-    background: #dce2ff;
-    color: #08090b;
-}
+::selection { background: #dce2ff; color: #08090b; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-button {
-    font: inherit;
-}
-
-/* ─────────────────────────────────────────────
-   NAVIGATION
-───────────────────────────────────────────── */
-
+/* NAVIGATION */
 .nav {
     position: fixed;
     top: 0;
@@ -105,14 +91,8 @@ button {
     letter-spacing: -.04em;
 }
 
-.brand-mark {
-    width: 30px;
-    height: 30px;
-}
-
-.brand-name {
-    font-size: 16px;
-}
+.brand-mark { width: 30px; height: 30px; }
+.brand-name { font-size: 16px; }
 
 .nav-links {
     display: flex;
@@ -122,13 +102,8 @@ button {
     font-size: 13px;
 }
 
-.nav-links a {
-    transition: color .2s ease;
-}
-
-.nav-links a:hover {
-    color: white;
-}
+.nav-links a { transition: color .2s ease; }
+.nav-links a:hover { color: white; }
 
 .nav-right {
     display: flex;
@@ -144,15 +119,9 @@ button {
     transition: .25s ease;
 }
 
-.nav-product:hover {
-    background: white;
-    color: black;
-}
+.nav-product:hover { background: white; color: black; }
 
-/* ─────────────────────────────────────────────
-   GLOBAL
-───────────────────────────────────────────── */
-
+/* GLOBAL */
 .container {
     width: min(var(--max), calc(100% - 56px));
     margin: auto;
@@ -165,13 +134,8 @@ button {
     font-size: 10px;
 }
 
-.label {
-    color: var(--muted);
-}
-
-.accent {
-    color: var(--accent);
-}
+.label { color: var(--muted); }
+.accent { color: var(--accent); }
 
 .section {
     position: relative;
@@ -191,10 +155,7 @@ button {
     transform: translateY(0);
 }
 
-/* ─────────────────────────────────────────────
-   HERO
-───────────────────────────────────────────── */
-
+/* HERO */
 .hero {
     min-height: 100vh;
     padding-top: 150px;
@@ -213,12 +174,7 @@ button {
     right: -350px;
     top: 80px;
     border-radius: 50%;
-    background: radial-gradient(
-        circle,
-        rgba(111,130,255,.12) 0%,
-        rgba(111,130,255,.04) 30%,
-        transparent 70%
-    );
+    background: radial-gradient(circle, rgba(111,130,255,.12) 0%, rgba(111,130,255,.04) 30%, transparent 70%);
     pointer-events: none;
 }
 
@@ -229,9 +185,7 @@ button {
     margin-bottom: 45px;
 }
 
-.hero-location {
-    color: var(--dim);
-}
+.hero-location { color: var(--dim); }
 
 .hero-title {
     max-width: 1180px;
@@ -243,18 +197,9 @@ button {
     z-index: 2;
 }
 
-.hero-title span {
-    display: block;
-}
-
-.hero-title .indent {
-    margin-left: 15%;
-}
-
-.hero-title .thin {
-    font-weight: 400;
-    color: #aeb2b9;
-}
+.hero-title span { display: block; }
+.hero-title .indent { margin-left: 15%; }
+.hero-title .thin { font-weight: 400; color: #aeb2b9; }
 
 .hero-bottom {
     display: grid;
@@ -271,9 +216,7 @@ button {
     line-height: 1.7;
 }
 
-.hero-cta {
-    justify-self: end;
-}
+.hero-cta { justify-self: end; }
 
 .button {
     display: inline-flex;
@@ -290,19 +233,10 @@ button {
     transition: transform .3s ease;
 }
 
-.button:hover {
-    background: #f4f4f4;
-    color: #08090b;
-}
+.button:hover { background: #f4f4f4; color: #08090b; }
+.button:hover span:last-child { transform: translate(4px,-4px); }
 
-.button:hover span:last-child {
-    transform: translate(4px,-4px);
-}
-
-/* ─────────────────────────────────────────────
-   HERO GRID
-───────────────────────────────────────────── */
-
+/* HERO GRAPHIC */
 .hero-grid {
     position: absolute;
     right: -5%;
@@ -333,16 +267,8 @@ button {
     animation: rotate 30s linear infinite;
 }
 
-.orbit.two {
-    inset: 24%;
-    animation-duration: 20s;
-    animation-direction: reverse;
-}
-
-.orbit.three {
-    inset: 36%;
-    animation-duration: 13s;
-}
+.orbit.two { inset: 24%; animation-duration: 20s; animation-direction: reverse; }
+.orbit.three { inset: 36%; animation-duration: 13s; }
 
 .core {
     position: absolute;
@@ -363,28 +289,21 @@ button {
     background: rgba(180,190,255,.75);
 }
 
-@keyframes rotate {
-    to { transform: rotate(360deg); }
-}
+@keyframes rotate { to { transform: rotate(360deg); } }
 
 @keyframes pulse {
     0%,100% { transform: rotate(45deg) scale(1); }
     50% { transform: rotate(45deg) scale(1.15); }
 }
 
-/* ─────────────────────────────────────────────
-   INTRO
-───────────────────────────────────────────── */
-
+/* INTRO */
 .intro {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 80px;
 }
 
-.section-number {
-    color: var(--dim);
-}
+.section-number { color: var(--dim); }
 
 .intro-title {
     font-size: clamp(38px, 5vw, 76px);
@@ -393,15 +312,9 @@ button {
     max-width: 900px;
 }
 
-.intro-title em {
-    font-style: normal;
-    color: #777d87;
-}
+.intro-title em { font-style: normal; color: #777d87; }
 
-/* ─────────────────────────────────────────────
-   PRODUCT
-───────────────────────────────────────────── */
-
+/* PRODUCT */
 .product-header {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -409,16 +322,8 @@ button {
     margin-bottom: 90px;
 }
 
-.product-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.product-meta strong {
-    font-size: 20px;
-    font-weight: 500;
-}
+.product-meta { display: flex; flex-direction: column; gap: 10px; }
+.product-meta strong { font-size: 20px; font-weight: 500; }
 
 .product-title {
     font-size: clamp(55px, 8vw, 120px);
@@ -437,17 +342,12 @@ button {
     text-transform: uppercase;
 }
 
-/* ─────────────────────────────────────────────
-   VIDCLIPS VISUAL
-───────────────────────────────────────────── */
-
+/* VIDCLIPS VISUAL */
 .vidclips-visual {
     position: relative;
     min-height: 650px;
     border: 1px solid var(--line);
-    background:
-        radial-gradient(circle at 75% 20%, rgba(105,125,255,.12), transparent 28%),
-        #0b0d10;
+    background: radial-gradient(circle at 75% 20%, rgba(105,125,255,.12), transparent 28%), #0b0d10;
     overflow: hidden;
 }
 
@@ -460,11 +360,7 @@ button {
     padding: 0 20px;
 }
 
-.vc-brand {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: -.02em;
-}
+.vc-brand { font-size: 12px; font-weight: 600; letter-spacing: -.02em; }
 
 .vc-status {
     display: flex;
@@ -489,17 +385,12 @@ button {
     height: 596px;
 }
 
-.vc-preview {
-    position: relative;
-    border-right: 1px solid var(--line);
-    overflow: hidden;
-}
+.vc-preview { position: relative; border-right: 1px solid var(--line); overflow: hidden; }
 
 .preview-image {
     position: absolute;
     inset: 35px;
-    background:
-        linear-gradient(145deg, #151920, #070809);
+    background: linear-gradient(145deg, #151920, #070809);
     overflow: hidden;
 }
 
@@ -507,36 +398,13 @@ button {
     content: "";
     position: absolute;
     inset: 0;
-    background:
-        radial-gradient(ellipse at 20% 30%, rgba(150,160,200,.15), transparent 25%),
-        radial-gradient(ellipse at 75% 65%, rgba(80,100,180,.15), transparent 30%);
+    background: radial-gradient(ellipse at 20% 30%, rgba(150,160,200,.15), transparent 25%), radial-gradient(ellipse at 75% 65%, rgba(80,100,180,.15), transparent 30%);
 }
 
-.scene-shape {
-    position: absolute;
-    border: 1px solid rgba(180,190,255,.35);
-}
-
-.scene-one {
-    width: 34%;
-    height: 42%;
-    left: 18%;
-    top: 25%;
-}
-
-.scene-two {
-    width: 20%;
-    height: 25%;
-    right: 15%;
-    top: 16%;
-}
-
-.scene-three {
-    width: 28%;
-    height: 32%;
-    right: 20%;
-    bottom: 15%;
-}
+.scene-shape { position: absolute; border: 1px solid rgba(180,190,255,.35); }
+.scene-one { width: 34%; height: 42%; left: 18%; top: 25%; }
+.scene-two { width: 20%; height: 25%; right: 15%; top: 16%; }
+.scene-three { width: 28%; height: 32%; right: 20%; bottom: 15%; }
 
 .scan {
     position: absolute;
@@ -600,10 +468,7 @@ button {
     position: relative;
 }
 
-.timeline-block.active {
-    border-color: rgba(170,185,255,.55);
-    background: rgba(130,145,255,.07);
-}
+.timeline-block.active { border-color: rgba(170,185,255,.55); background: rgba(130,145,255,.07); }
 
 .timeline-block::after {
     content: "";
@@ -615,19 +480,10 @@ button {
     background: rgba(170,185,255,.5);
 }
 
-.vc-analysis {
-    padding: 26px 22px;
-}
+.vc-analysis { padding: 26px 22px; }
+.analysis-title { color: #737984; margin-bottom: 22px; }
 
-.analysis-title {
-    color: #737984;
-    margin-bottom: 22px;
-}
-
-.analysis-item {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--line);
-}
+.analysis-item { padding: 20px 0; border-bottom: 1px solid var(--line); }
 
 .analysis-item-top {
     display: flex;
@@ -635,28 +491,10 @@ button {
     margin-bottom: 9px;
 }
 
-.analysis-name {
-    font-size: 12px;
-}
-
-.analysis-value {
-    font-family: "DM Mono", monospace;
-    font-size: 9px;
-    color: #777e89;
-}
-
-.analysis-line {
-    height: 2px;
-    background: #1c2026;
-    position: relative;
-}
-
-.analysis-line span {
-    position: absolute;
-    height: 100%;
-    left: 0;
-    background: #8e9dff;
-}
+.analysis-name { font-size: 12px; }
+.analysis-value { font-family: "DM Mono", monospace; font-size: 9px; color: #777e89; }
+.analysis-line { height: 2px; background: #1c2026; position: relative; }
+.analysis-line span { position: absolute; height: 100%; left: 0; background: #8e9dff; }
 
 .analysis-item:nth-child(2) .analysis-line span { width: 91%; }
 .analysis-item:nth-child(3) .analysis-line span { width: 78%; }
@@ -672,14 +510,383 @@ button {
     font-size: 16px;
     line-height: 1.8;
 }
+</style>
+</head>
 
-/* ─────────────────────────────────────────────
-   PIPELINE
-───────────────────────────────────────────── */
+<body>
 
-.pipeline-intro {
-    max-width: 850px;
-}
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="#" class="brand">
+            <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+                <rect x="10" y="10" width="20" height="20"
+                      transform="rotate(45 20 20)"
+                      stroke="currentColor" stroke-width="1.4"/>
+                <path d="M20 7V33M7 20H33"
+                      stroke="currentColor" stroke-width=".7" opacity=".5"/>
+            </svg>
+            <span class="brand-name">AETHER</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="#product">Product</a>
+            <a href="#technology">Technology</a>
+            <a href="#system">Aether</a>
+            <a href="#about">About</a>
+        </div>
+
+        <div class="nav-right">
+            <a href="#product" class="nav-product">VIDCLIPS ↗</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-top">
+            <div class="mono label">AETHER / SOFTWARE STUDIO</div>
+            <div class="mono hero-location">01 — 2026</div>
+        </div>
+
+        <h1 class="hero-title reveal">
+            <span>We build</span>
+            <span class="indent thin">software for</span>
+            <span>what comes next<span class="accent">.</span></span>
+        </h1>
+
+        <div class="hero-bottom reveal">
+            <p class="hero-description">
+                Aether is an independent technology company building
+                intelligent software around the way people create,
+                understand and work with digital information.
+            </p>
+
+            <div class="hero-cta">
+                <a href="#product" class="button">
+                    <span>Explore Aether</span><span>↘</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-grid">
+        <div class="grid-lines"></div>
+        <div class="orbit"></div>
+        <div class="orbit two"></div>
+        <div class="orbit three"></div>
+        <div class="core"></div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container intro">
+        <div class="mono section-number reveal">00 / THE IDEA</div>
+        <div class="reveal">
+            <h2 class="intro-title">
+                Technology should make
+                complex things <em>understandable.</em>
+                <br><br>
+                Not louder.
+                Not heavier.
+                <br>
+                <span class="accent">Smarter.</span>
+            </h2>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="product">
+    <div class="container">
+        <div class="product-header reveal">
+            <div class="product-meta">
+                <div class="mono label">AETHER / PRODUCTS</div>
+                <strong>01</strong>
+                <div class="mono label">FIRST PRODUCT</div>
+            </div>
+
+            <div>
+                <h2 class="product-title">
+                    VidClips
+                    <small>Understand video at a deeper level.</small>
+                </h2>
+            </div>
+        </div>
+
+        <div class="vidclips-visual reveal">
+            <div class="vc-top">
+                <div class="vc-brand">VIDCLIPS</div>
+                <div class="vc-status">
+                    <span class="status-dot"></span>
+                    ANALYSIS ENGINE
+                </div>
+            </div>
+
+            <div class="vc-content">
+                <div class="vc-preview">
+                    <div class="preview-image">
+                        <div class="preview-label">SCENE / 04 — STRUCTURAL VIEW</div>
+                        <div class="scene-shape scene-one"></div>
+                        <div class="scene-shape scene-two"></div>
+                        <div class="scene-shape scene-three"></div>
+                        <div class="object-point point-one"></div>
+                        <div class="object-point point-two"></div>
+                        <div class="object-point point-three"></div>
+                        <div class="object-point point-four"></div>
+                        <div class="scan"></div>
+                    </div>
+
+                    <div class="timeline">
+                        <div class="timeline-block active"></div>
+                        <div class="timeline-block"></div>
+                        <div class="timeline-block"></div>
+                        <div class="timeline-block active"></div>
+                        <div class="timeline-block"></div>
+                        <div class="timeline-block"></div>
+                        <div class="timeline-block active"></div>
+                        <div class="timeline-block"></div>
+                    </div>
+                </div>
+
+                <div class="vc-analysis">
+                    <div class="mono analysis-title">VIDEO INTELLIGENCE</div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Scenes</span>
+                            <span class="analysis-value">ACTIVE</span>
+                        </div>
+                        <div class="analysis-line"><span></span></div>
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Objects</span>
+                            <span class="analysis-value">TRACKED</span>
+                        </div>
+                        <div class="analysis-line"><span></span></div>
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Motion</span>
+                            <span class="analysis-value">MAPPED</span>
+                        </div>
+                        <div class="analysis-line"><span></span></div>
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Depth</span>
+                            <span class="analysis-value">ESTIMATED</span>
+                        </div>
+                        <div class="analysis-line"><span></span></div>
+                    </div>
+
+                    <div class="analysis-item">
+                        <div class="analysis-item-top">
+                            <span class="analysis-name">Text</span>
+                            <span class="analysis-value">EXTRACTED</span>
+                        </div>
+                        <div class="analysis-line"><span></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-description reveal">
+            VidClips explores a different way to work with video:
+            instead of treating footage as a flat file, it analyzes
+            the structure inside it—scenes, motion, objects, text,
+            depth, color and audio—turning visual information into
+            something machines and creators can understand.
+        </div>
+    </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="section" id="technology">
+    <div class="container">
+        <div class="pipeline-intro reveal">
+            <div class="mono label">02 / FROM FOOTAGE TO STRUCTURE</div>
+            <h2 class="pipeline-title">
+                A video is more than
+                a sequence of frames.
+            </h2>
+        </div>
+
+        <div class="pipeline reveal">
+            <div class="pipeline-step">
+                <span class="step-number">01</span>
+                <span class="step-arrow">↗</span>
+                <span class="step-name">VIDEO</span>
+            </div>
+            <div class="pipeline-step">
+                <span class="step-number">02</span>
+                <span class="step-arrow">↗</span>
+                <span class="step-name">ANALYZE</span>
+            </div>
+            <div class="pipeline-step">
+                <span class="step-number">03</span>
+                <span class="step-arrow">↗</span>
+                <span class="step-name">STRUCTURE</span>
+            </div>
+            <div class="pipeline-step">
+                <span class="step-number">04</span>
+                <span class="step-arrow">↗</span>
+                <span class="step-name">INTELLIGENCE</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="section">
+    <div class="container capabilities">
+        <div class="reveal">
+            <div class="mono label">03 / WHAT VIDCLIPS SEES</div>
+            <h2 class="capability-heading">
+                Turning pixels
+                into <span>structure.</span>
+            </h2>
+        </div>
+
+        <div class="capability-list reveal">
+            <div class="capability">
+                <span class="capability-index">01</span>
+                <span class="capability-name">Scenes</span>
+                <span class="capability-description">SEGMENTATION</span>
+            </div>
+            <div class="capability">
+                <span class="capability-index">02</span>
+                <span class="capability-name">Camera</span>
+                <span class="capability-description">MOTION</span>
+            </div>
+            <div class="capability">
+                <span class="capability-index">03</span>
+                <span class="capability-name">Objects</span>
+                <span class="capability-description">DETECTION</span>
+            </div>
+            <div class="capability">
+                <span class="capability-index">04</span>
+                <span class="capability-name">Text</span>
+                <span class="capability-description">OCR</span>
+            </div>
+            <div class="capability">
+                <span class="capability-index">05</span>
+                <span class="capability-name">Depth</span>
+                <span class="capability-description">ESTIMATION</span>
+            </div>
+            <div class="capability">
+                <span class="capability-index">06</span>
+                <span class="capability-name">Color</span>
+                <span class="capability-description">ANALYSIS</span>
+            </div>
+            <div class="capability">
+                <span class="capability-index">07</span>
+                <span class="capability-name">Audio</span>
+                <span class="capability-description">SIGNAL</span>
+            </div>
+            <div class="capability">
+                <span class="capability-index">08</span>
+                <span class="capability-name">Motion</span>
+                <span class="capability-description">TRACKING</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AETHER SYSTEM -->
+<section class="section system" id="system">
+    <div class="container system-grid">
+        <div class="reveal">
+            <div class="mono label">04 / THE AETHER SYSTEM</div>
+            <h2 class="system-title">
+                One company.
+                <br>
+                Many <span>directions.</span>
+            </h2>
+            <p class="system-copy">
+                VidClips is the first layer of Aether. The long-term
+                idea is larger: build a family of focused software
+                products that share the same philosophy of intelligent,
+                useful technology.
+            </p>
+        </div>
+
+        <div class="architecture reveal">
+            <div class="system-node node-one">AETHER / CORE</div>
+            <div class="system-node node-two">VIDCLIPS / 01</div>
+            <div class="system-node node-three">FUTURE / 02+</div>
+            <div class="connection one"></div>
+            <div class="connection two"></div>
+            <div class="connection three"></div>
+            <div class="aether-core">
+                <span>AETHER</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="section manifesto" id="about">
+    <div class="container">
+        <div class="mono label reveal">05 / WHY AETHER</div>
+        <h2 class="manifesto-text reveal">
+            We don't want to build
+            <span class="muted">more software.</span>
+            <br><br>
+            We want to build
+            software that makes
+            <span class="accent-word">more possible.</span>
+        </h2>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-main">
+            <div>
+                <div class="footer-brand">AETHER</div>
+                <p class="footer-tagline">
+                    Independent software for the next generation
+                    of digital creation and intelligence.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <span class="mono heading">EXPLORE</span>
+                <a href="#product">VidClips</a>
+                <a href="#technology">Technology</a>
+                <a href="#system">Aether</a>
+            </div>
+
+            <div class="footer-column">
+                <span class="mono heading">CONNECT</span>
+                <a href="https://github.com/lakshya4567/VidClips"
+                   target="_blank" rel="noopener noreferrer">
+                    GitHub ↗
+                </a>
+                <a href="mailto:hello@aether.dev">Contact ↗</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 AETHER</span>
+            <span>BUILT FOR WHAT COMES NEXT</span>
+        </div>
+    </div>
+</footer>
+
+</main>
+
+<style>
+/* PIPELINE */
+.pipeline-intro { max-width: 850px; }
 
 .pipeline-title {
     margin-top: 30px;
@@ -702,9 +909,7 @@ button {
     position: relative;
 }
 
-.pipeline-step:last-child {
-    border-right: none;
-}
+.pipeline-step:last-child { border-right: none; }
 
 .step-number {
     color: var(--dim);
@@ -726,10 +931,7 @@ button {
     color: #515761;
 }
 
-/* ─────────────────────────────────────────────
-   CAPABILITIES
-───────────────────────────────────────────── */
-
+/* CAPABILITIES */
 .capabilities {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -742,13 +944,9 @@ button {
     letter-spacing: -.06em;
 }
 
-.capability-heading span {
-    color: #6c727b;
-}
+.capability-heading span { color: #6c727b; }
 
-.capability-list {
-    border-top: 1px solid var(--line2);
-}
+.capability-list { border-top: 1px solid var(--line2); }
 
 .capability {
     display: grid;
@@ -782,13 +980,8 @@ button {
     text-align: right;
 }
 
-/* ─────────────────────────────────────────────
-   AETHER SYSTEM
-───────────────────────────────────────────── */
-
-.system {
-    background: #0b0d10;
-}
+/* AETHER SYSTEM */
+.system { background: #0b0d10; }
 
 .system-grid {
     display: grid;
@@ -803,9 +996,7 @@ button {
     line-height: .9;
 }
 
-.system-title span {
-    color: #676d76;
-}
+.system-title span { color: #676d76; }
 
 .system-copy {
     margin-top: 35px;
@@ -833,15 +1024,8 @@ button {
     border-radius: 50%;
 }
 
-.architecture::before {
-    width: 420px;
-    height: 420px;
-}
-
-.architecture::after {
-    width: 300px;
-    height: 300px;
-}
+.architecture::before { width: 420px; height: 420px; }
+.architecture::after { width: 300px; height: 300px; }
 
 .aether-core {
     position: relative;
@@ -885,26 +1069,11 @@ button {
     background: linear-gradient(transparent, rgba(170,185,255,.45));
 }
 
-.connection.one {
-    top: 100px;
-}
+.connection.one { top: 100px; }
+.connection.two { bottom: 100px; left: 38%; transform: rotate(35deg); }
+.connection.three { bottom: 100px; right: 38%; transform: rotate(-35deg); }
 
-.connection.two {
-    bottom: 100px;
-    left: 38%;
-    transform: rotate(35deg);
-}
-
-.connection.three {
-    bottom: 100px;
-    right: 38%;
-    transform: rotate(-35deg);
-}
-
-/* ─────────────────────────────────────────────
-   MANIFESTO
-───────────────────────────────────────────── */
-
+/* MANIFESTO */
 .manifesto {
     min-height: 80vh;
     display: flex;
@@ -918,18 +1087,10 @@ button {
     letter-spacing: -.07em;
 }
 
-.manifesto-text .muted {
-    color: #555b64;
-}
+.manifesto-text .muted { color: #555b64; }
+.manifesto-text .accent-word { color: var(--accent2); }
 
-.manifesto-text .accent-word {
-    color: var(--accent2);
-}
-
-/* ─────────────────────────────────────────────
-   FOOTER
-───────────────────────────────────────────── */
-
+/* FOOTER */
 .footer {
     border-top: 1px solid var(--line);
     padding: 70px 0 35px;
@@ -956,26 +1117,10 @@ button {
     margin-top: 25px;
 }
 
-.footer-column {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.footer-column a {
-    color: #858a93;
-    font-size: 13px;
-    transition: color .2s ease;
-}
-
-.footer-column a:hover {
-    color: white;
-}
-
-.footer-column .heading {
-    color: #444a53;
-    margin-bottom: 8px;
-}
+.footer-column { display: flex; flex-direction: column; gap: 14px; }
+.footer-column a { color: #858a93; font-size: 13px; transition: color .2s ease; }
+.footer-column a:hover { color: white; }
+.footer-column .heading { color: #444a53; margin-bottom: 8px; }
 
 .footer-bottom {
     border-top: 1px solid var(--line);
@@ -989,10 +1134,7 @@ button {
     letter-spacing: .1em;
 }
 
-/* ─────────────────────────────────────────────
-   CURSOR GLOW
-───────────────────────────────────────────── */
-
+/* CURSOR GLOW */
 .cursor-glow {
     position: fixed;
     width: 350px;
@@ -1000,98 +1142,163 @@ button {
     border-radius: 50%;
     pointer-events: none;
     z-index: 0;
-    background: radial-gradient(
-        circle,
-        rgba(130,145,255,.055),
-        transparent 65%
-    );
+    background: radial-gradient(circle, rgba(130,145,255,.055), transparent 65%);
     transform: translate(-50%,-50%);
     transition: opacity .3s;
 }
 
-/* ─────────────────────────────────────────────
-   MOBILE
-───────────────────────────────────────────── */
-
+/* RESPONSIVE */
 @media (max-width: 900px) {
-
-    .container,
-    .nav-inner {
-        width: min(100% - 34px, var(--max));
-    }
-
-    .nav-links {
-        display: none;
-    }
+    .container, .nav-inner { width: min(100% - 34px, var(--max)); }
+    .nav-links { display: none; }
 
     .hero {
         padding-top: 130px;
         min-height: 900px;
     }
 
-    .hero-top {
-        margin-bottom: 30px;
-    }
-
-    .hero-title {
-        font-size: clamp(52px, 14vw, 100px);
-    }
-
-    .hero-title .indent {
-        margin-left: 0;
-    }
+    .hero-top { margin-bottom: 30px; }
+    .hero-title { font-size: clamp(52px, 14vw, 100px); }
+    .hero-title .indent { margin-left: 0; }
 
     .hero-bottom {
         grid-template-columns: 1fr;
         margin-top: 55px;
     }
 
-    .hero-cta {
-        justify-self: start;
-    }
+    .hero-cta { justify-self: start; }
+    .hero-grid { width: 100vw; height: 100vw; right: -35%; bottom: 0; opacity: .2; }
+    .section { padding: 110px 0; }
 
-    .hero-grid {
-        width: 100vw;
-        height: 100vw;
-        right: -35%;
-        bottom: 0;
-        opacity: .2;
-    }
-
-    .section {
-        padding: 110px 0;
-    }
-
-    .intro,
-    .product-header,
-    .capabilities,
-    .system-grid {
+    .intro, .product-header, .capabilities, .system-grid {
         grid-template-columns: 1fr;
         gap: 45px;
     }
 
-    .product-title {
-        font-size: 19vw;
+    .product-title { font-size: 19vw; }
+    .vidclips-visual { min-height: 560px; }
+    .vc-content { grid-template-columns: 1fr; }
+    .vc-analysis { display: none; }
+    .vc-preview { border-right: none; }
+
+    .pipeline { grid-template-columns: 1fr 1fr; }
+
+    .pipeline-step {
+        min-height: 220px;
+        border-bottom: 1px solid var(--line);
     }
 
-    .vidclips-visual {
-        min-height: 560px;
-    }
+    .pipeline-step:nth-child(2) { border-right: none; }
+    .architecture { height: 450px; }
 
-    .vc-content {
-        grid-template-columns: 1fr;
-    }
-
-    .vc-analysis {
-        display: none;
-    }
-
-    .vc-preview {
-        border-right: none;
-    }
-
-    .pipeline {
+    .footer-main {
         grid-template-columns: 1fr 1fr;
     }
 
-    .pipeli
+    .footer-brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 550px) {
+    .nav { height: 65px; }
+    .nav-product { padding: 8px 11px; }
+    .hero { min-height: 850px; }
+    .hero-title { font-size: 18vw; }
+    .hero-description { font-size: 14px; }
+
+    .pipeline { grid-template-columns: 1fr; }
+    .pipeline-step { border-right: none; }
+
+    .capability { grid-template-columns: 45px 1fr; }
+    .capability-description { display: none; }
+
+    .architecture { height: 380px; }
+    .architecture::before { width: 280px; height: 280px; }
+    .architecture::after { width: 190px; height: 190px; }
+
+    .aether-core { width: 85px; height: 85px; }
+    .node-one { top: 35px; }
+    .node-two { bottom: 35px; left: 8%; }
+    .node-three { bottom: 35px; right: 8%; }
+
+    .footer-main {
+        grid-template-columns: 1fr;
+        padding-bottom: 70px;
+    }
+
+    .footer-brand { grid-column: auto; }
+    .footer-bottom { flex-direction: column; gap: 10px; }
+}
+</style>
+
+<script>
+/* NAVIGATION BLUR */
+window.addEventListener("scroll", () => {
+    const nav = document.getElementById("nav");
+    if (window.scrollY > 30) {
+        nav.classList.add("scrolled");
+    } else {
+        nav.classList.remove("scrolled");
+    }
+});
+
+/* SCROLL REVEALS */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => {
+    observer.observe(el);
+});
+
+/* CURSOR LIGHT */
+const glow = document.getElementById("cursorGlow");
+
+let mouseX = 0;
+let mouseY = 0;
+let glowX = 0;
+let glowY = 0;
+
+window.addEventListener("mousemove", e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateGlow() {
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
+
+    glow.style.left = glowX + "px";
+    glow.style.top = glowY + "px";
+
+    requestAnimationFrame(animateGlow);
+}
+
+animateGlow();
+
+/* SMOOTH ANCHOR OFFSET */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", e => {
+        const id = link.getAttribute("href");
+        if (id === "#") return;
+
+        const target = document.querySelector(id);
+        if (!target) return;
+
+        e.preventDefault();
+
+        window.scrollTo({
+            top: target.offsetTop - 80,
+            behavior: "smooth"
+        });
+    });
+});
+</script>
+
+</body>
+</html>
+
