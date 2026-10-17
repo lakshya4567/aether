@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<meta name="description" content="Download Core for Windows — A fast, private, lightweight browser built for the modern web.">
+<title>Download Core for Windows — Aether</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg: #08090b;
+    --bg2: #0d0f12;
+    --surface: #111419;
+    --surface2: #15181d;
+    --text: #f3f4f6;
+    --muted: #8d929b;
+    --dim: #555b65;
+    --line: rgba(255,255,255,.09);
+    --line2: rgba(255,255,255,.15);
+    --accent: #8ea2ff;
+    --accent2: #b7c2ff;
+    --max: 1400px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: Inter, Arial, sans-serif; overflow-x: hidden; }
+
+body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: .025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+::selection { background: #dce2ff; color: #08090b; }
+a { color: inherit; text-decoration: none; }
+
+/* NAVIGATION */
+.nav {
+    position: fixed; top: 0; left: 0; width: 100%; height: 78px; z-index: 100;
+    display: flex; align-items: center; border-bottom: 1px solid transparent; transition: .35s ease;
+}
+.nav.scrolled { background: rgba(8,9,11,.78); backdrop-filter: blur(18px); border-bottom-color: var(--line); }
+.nav-inner { width: min(var(--max), calc(100% - 56px)); margin: auto; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 13px; font-weight: 700; letter-spacing: -.04em; }
+.brand-mark { width: 30px; height: 30px; }
+.brand-name { font-size: 16px; }
+.nav-links { display: flex; align-items: center; gap: 34px; color: #aeb2b9; font-size: 13px; }
+.nav-links a { transition: color .2s ease; }
+.nav-links a:hover { color: white; }
+.nav-right { display: flex; align-items: center; gap: 18px; }
+.nav-product {
+    padding: 10px 15px; border: 1px solid var(--line2); border-radius: 100px; font-size: 12px; transition: .25s ease;
+}
+.nav-product:hover { background: white; color: black; }
+
+/* GLOBAL */
+.container { width: min(var(--max), calc(100% - 56px)); margin: auto; }
+.mono { font-family: "DM Mono", monospace; text-transform: uppercase; letter-spacing: .13em; font-size: 10px; }
+.label { color: var(--muted); }
+.accent { color: var(--accent); }
+.section { position: relative; padding: 140px 0; border-top: 1px solid var(--line); }
+.reveal { opacity: 0; transform: translateY(35px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* HERO */
+.hero {
+    min-height: 100vh; padding-top: 150px; padding-bottom: 100px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    position: relative; overflow: hidden; text-align: center;
+}
+.hero::before {
+    content: ""; position: absolute; width: 900px; height: 900px; left: 50%; top: 50%;
+    transform: translate(-50%, -50%); border-radius: 50%;
+    background: radial-gradient(circle, rgba(111,130,255,.15) 0%, rgba(111,130,255,.04) 30%, transparent 70%);
+    pointer-events: none;
+}
+
+.hero-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border: 1px solid var(--line2); border-radius: 100px;
+    font-size: 11px; font-family: "DM Mono", monospace; color: var(--muted);
+    margin-bottom: 32px; position: relative; z-index: 2;
+}
+.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #28c840; box-shadow: 0 0 10px #28c840; }
+
+.hero-title {
+    max-width: 1100px; font-size: clamp(56px, 8vw, 128px); line-height: .92;
+    letter-spacing: -.075em; font-weight: 700; position: relative; z-index: 2;
+}
+.hero-title .accent-word { color: var(--accent2); }
+
+.hero-subtitle {
+    max-width: 620px; margin: 32px auto 48px; color: var(--muted);
+    font-size: 17px; line-height: 1.7; position: relative; z-index: 2;
+}
+
+/* DOWNLOAD BLOCK */
+.download-block {
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    position: relative; z-index: 2;
+}
+
+.download-btn {
+    display: inline-flex; align-items: center; gap: 18px;
+    padding: 22px 42px; background: var(--text); color: var(--bg);
+    border-radius: 100px; font-size: 16px; font-weight: 600; letter-spacing: -.01em;
+    transition: all .3s cubic-bezier(.16,1,.3,1);
+    box-shadow: 0 10px 40px rgba(142,162,255,.2);
+}
+.download-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(142,162,255,.35);
+    background: var(--accent2);
+}
+.download-btn svg { width: 22px; height: 22px; }
+
+.download-meta {
+    display: flex; align-items: center; gap: 24px;
+    font-family: "DM Mono", monospace; font-size: 11px; color: var(--dim);
+}
+.download-meta span { display: flex; align-items: center; gap: 6px; }
+.download-meta .sep { width: 3px; height: 3px; background: var(--dim); border-radius: 50%; }
+
+/* BROWSER PREVIEW */
+.browser-preview {
+    margin-top: 80px; width: 100%; max-width: 900px;
+    border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+    background: var(--surface); position: relative; z-index: 2;
+    box-shadow: 0 40px 100px rgba(0,0,0,.5);
+}
+.browser-bar {
+    height: 48px; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; padding: 0 18px; gap: 14px;
+    background: var(--bg2);
+}
+.browser-dots { display: flex; gap: 7px; }
+.browser-dot { width: 11px; height: 11px; border-radius: 50%; }
+.browser-dot.red { background: #ff5f57; }
+.browser-dot.yellow { background: #febc2e; }
+.browser-dot.green { background: #28c840; }
+.browser-url {
+    flex: 1; height: 28px; background: var(--bg); border: 1px solid var(--line);
+    border-radius: 8px; display: flex; align-items: center; padding: 0 14px;
+    font-size: 12px; color: var(--muted); font-family: "DM Mono", monospace;
+}
+.browser-content {
+    height: 420px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0b0d10 0%, #111419 100%);
+    position: relative;
+}
+.browser-content::before {
+    content: "CORE"; font-size: 120px; font-weight: 800; letter-spacing: -.06em;
+    color: rgba(255,255,255,0.04);
+}
+
+/* FEATURES */
+.features-header { text-align: center; max-width: 700px; margin: 0 auto 80px; }
+.features-title {
+    font-size: clamp(36px, 5vw, 64px); letter-spacing: -.05em;
+    line-height: 1.05; margin-top: 16px;
+}
+.features-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+}
+.feature-card {
+    padding: 48px 40px; border: 1px solid var(--line); background: var(--surface);
+    border-radius: 20px; transition: all .4s ease; position: relative; overflow: hidden;
+}
+.feature-card:hover { border-color: rgba(142,162,255,.3); transform: translateY(-4px); }
+.feature-number {
+    font-family: "DM Mono", monospace; font-size: 11px; color: var(--accent);
+    margin-bottom: 24px; letter-spacing: .1em;
+}
+.feature-icon {
+    width: 56px; height: 56px; border-radius: 14px; background: var(--surface2);
+    border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin-bottom: 28px;
+}
+.feature-card h3 {
+    font-size: 28px; font-weight: 600; letter-spacing: -.03em; margin-bottom: 14px;
+}
+.feature-card p { color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+/* SYSTEM REQUIREMENTS */
+.requirements { background: var(--bg2); }
+.requirements-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+}
+.requirements-title {
+    font-size: clamp(32px, 4vw, 52px); letter-spacing: -.05em; line-height: 1.1;
+}
+.spec-list { display: flex; flex-direction: column; gap: 0; }
+.spec-item {
+    display: grid; grid-template-columns: 140px 1fr; gap: 24px;
+    padding: 22px 0; border-bottom: 1px solid var(--line);
+    align-items: baseline;
+}
+.spec-item:first-child { border-top: 1px solid var(--line); }
+.spec-label {
+    font-family: "DM Mono", monospace; font-size: 10px; color: var(--dim);
+    letter-spacing: .1em; text-transform: uppercase;
+}
+.spec-value { font-size: 15px; color: var(--text); }
+
+/* FAQ */
+.faq-header { text-align: center; max-width: 700px; margin: 0 auto 60px; }
+.faq-title { font-size: clamp(32px, 4vw, 52px); letter-spacing: -.05em; line-height: 1.1; margin-top: 16px; }
+.faq-list { max-width: 800px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--line); padding: 28px 0; }
+.faq-item:first-child { border-top: 1px solid var(--line); }
+.faq-q {
+    font-size: 18px; font-weight: 500; letter-spacing: -.02em; margin-bottom: 12px;
+    display: flex; justify-content: space-between; align-items: center; gap: 20px;
+}
+.faq-q::after { content: "+"; color: var(--dim); font-size: 22px; font-weight: 300; }
+.faq-a { color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+/* CTA FINAL */
+.final-cta { text-align: center; min-height: 60vh; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.final-cta-title {
+    font-size: clamp(40px, 6vw, 80px); letter-spacing: -.06em; line-height: 1; margin-bottom: 40px;
+}
+.final-cta-title .accent-word { color: var(--accent); }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--line); padding: 70px 0 35px; }
+.footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; padding-bottom: 100px; }
+.footer-brand { font-size: clamp(40px, 5vw, 72px); letter-spacing: -.08em; font-weight: 700; }
+.footer-tagline { color: #707680; max-width: 300px; line-height: 1.7; font-size: 13px; margin-top: 25px; }
+.footer-column { display: flex; flex-direction: column; gap: 14px; }
+.footer-column a { color: #858a93; font-size: 13px; transition: color .2s ease; }
+.footer-column a:hover { color: white; }
+.footer-column .heading { color: #444a53; margin-bottom: 8px; font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .1em; }
+.footer-bottom { border-top: 1px solid var(--line); padding-top: 25px; display: flex; justify-content: space-between; color: #50555e; font-family: "DM Mono", monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
+
+/* CURSOR GLOW */
+.cursor-glow {
+    position: fixed; width: 400px; height: 400px; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle, rgba(130,145,255,.06), transparent 65%); transform: translate(-50%,-50%); transition: opacity .3s;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .container, .nav-inner { width: min(100% - 34px, var(--max)); }
+    .nav-links { display: none; }
+    .features-grid { grid-template-columns: 1fr; }
+    .requirements-grid { grid-template-columns: 1fr; gap: 50px; }
+    .footer-main { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+    .browser-content::before { font-size: 80px; }
+}
+@media (max-width: 550px) {
+    .nav { height: 65px; }
+    .hero-title { font-size: 48px; }
+    .download-btn { padding: 18px 32px; font-size: 14px; }
+    .download-meta { flex-direction: column; gap: 10px; }
+    .download-meta .sep { display: none; }
+    .feature-card { padding: 32px 24px; }
+    .spec-item { grid-template-columns: 100px 1fr; gap: 16px; }
+    .footer-main { grid-template-columns: 1fr; padding-bottom: 70px; }
+    .footer-brand { grid-column: auto; }
+    .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="https://aether.isroot.in" class="brand">
+            <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+                <rect x="10" y="10" width="20" height="20" transform="rotate(45 20 20)" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M20 7V33M7 20H33" stroke="currentColor" stroke-width=".7" opacity=".5"/>
+            </svg>
+            <span class="brand-name">AETHER</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="https://aether.isroot.in/ecosys">Ecosystem</a>
+            <a href="https://aether.isroot.in/vidclips">VidClips</a>
+            <a href="https://aether.isroot.in/matrix">Matrix</a>
+            <a href="https://aether.isroot.in/core">Core</a>
+        </div>
+
+        <div class="nav-right">
+            <a href="#download" class="nav-product">DOWNLOAD ↗</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+
+<!-- HERO + DOWNLOAD -->
+<section class="hero" id="download">
+    <div class="container">
+        <div class="hero-badge reveal">
+            <span class="dot"></span>
+            <span>v1.0.0 — STABLE RELEASE</span>
+        </div>
+
+        <h1 class="hero-title reveal">
+            Core for <span class="accent-word">Windows.</span>
+        </h1>
+
+        <p class="hero-subtitle reveal">
+            A fast, private, and lightweight browser built from the ground up.
+            No bloat. No tracking. Just the web, the way it should be.
+        </p>
+
+        <div class="download-block reveal">
+            <!-- ============================================= -->
+            <!-- 👇 PUT YOUR DOWNLOAD LINK BELOW 👇 -->
+            <!-- Replace "YOUR_DOWNLOAD_LINK_HERE" with your actual .exe or .msi file URL -->
+            <!-- Example: href="https://aether.isroot.in/downloads/Core-Setup-1.0.0.exe" -->
+            <!-- ============================================= -->
+            <a href="YOUR_DOWNLOAD_LINK_HERE" download class="download-btn" id="downloadBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download for Windows
+            </a>
+            <!-- ============================================= -->
+            <!-- 👆 DOWNLOAD LINK IS ON THE LINE ABOVE 👆 -->
+            <!-- ============================================= -->
+
+            <div class="download-meta">
+                <span>Windows 10 / 11</span>
+                <span class="sep"></span>
+                <span>64-bit</span>
+                <span class="sep"></span>
+                <span>~48 MB</span>
+                <span class="sep"></span>
+                <span>Free forever</span>
+            </div>
+        </div>
+
+        <div class="browser-preview reveal">
+            <div class="browser-bar">
+                <div class="browser-dots">
+                    <div class="browser-dot red"></div>
+                    <div class="browser-dot yellow"></div>
+                    <div class="browser-dot green"></div>
+                </div>
+                <div class="browser-url">🔒 aether.isroot.in</div>
+            </div>
+            <div class="browser-content"></div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section">
+    <div class="container">
+        <div class="features-header reveal">
+            <div class="mono label">01 / WHY CORE</div>
+            <h2 class="features-title">Built for <span class="accent">what matters.</span></h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-number">/ 01</div>
+                <div class="feature-icon">🛡️</div>
+                <h3>Private by default.</h3>
+                <p>Zero telemetry. Zero tracking. Zero third-party data collection. Your browsing history, cookies, and data stay on your machine — always. Core doesn't phone home, ever.</p>
+            </div>
+
+            <div class="feature-card reveal">
+                <div class="feature-number">/ 02</div>
+                <div class="feature-icon">⚡</div>
+                <h3>Blazing fast.</h3>
+                <p>Optimized rendering engine, instant tab switching, and sub-second cold starts. Core is engineered to feel faster than any browser you've used before — even on older hardware.</p>
+            </div>
+
+            <div class="feature-card reveal">
+                <div class="feature-number">/ 03</div>
+                <div class="feature-icon">🪶</div>
+                <h3>Remarkably lightweight.</h3>
+                <p>Under 50 MB installer. Minimal RAM footprint. No background processes eating your resources. Core gives you back the performance your PC was meant to have.</p>
+            </div>
+
+            <div class="feature-card reveal">
+                <div class="feature-number">/ 04</div>
+                <div class="feature-icon">✨</div>
+                <h3>Effortlessly simple.</h3>
+                <p>If you've used Chrome, you already know Core. Familiar interface, seamless extension support, and zero learning curve. Just install and go — no configuration required.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SYSTEM REQUIREMENTS -->
+<section class="section requirements">
+    <div class="container">
+        <div class="requirements-grid">
+            <div class="reveal">
+                <div class="mono label" style="margin-bottom: 16px;">02 / REQUIREMENTS</div>
+                <h2 class="requirements-title">Runs on <span class="accent">almost anything.</span></h2>
+                <p style="color: var(--muted); margin-top: 24px; line-height: 1.7; max-width: 420px;">
+                    Core is designed to be lightweight enough for older machines while still feeling modern on the latest hardware.
+                </p>
+            </div>
+
+            <div class="spec-list reveal">
+                <div class="spec-item">
+                    <div class="spec-label">OS</div>
+                    <div class="spec-value">Windows 10 / 11 (64-bit)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Processor</div>
+                    <div class="spec-value">Intel / AMD — 1 GHz or faster</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Memory</div>
+                    <div class="spec-value">2 GB RAM minimum (4 GB recommended)</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Storage</div>
+                    <div class="spec-value">200 MB available space</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Display</div>
+                    <div class="spec-value">1280 × 720 resolution</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Internet</div>
+                    <div class="spec-value">Broadband connection</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+    <div class="container">
+        <div class="faq-header reveal">
+            <div class="mono label">03 / FAQ</div>
+            <h2 class="faq-title">Common questions.</h2>
+        </div>
+
+        <div class="faq-list">
+            <div class="faq-item reveal">
+                <div class="faq-q">Is Core really free?</div>
+                <div class="faq-a">Yes. Core is 100% free for personal and commercial use. No hidden fees, no premium tiers, no ads.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q">Does Core support Chrome extensions?</div>
+                <div class="faq-a">Yes. Core is built on a Chromium-compatible foundation, so most Chrome Web Store extensions work out of the box.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q">Will Core collect my data?</div>
+                <div class="faq-a">Never. Core has no telemetry, no analytics, and no data collection of any kind. Your privacy is non-negotiable.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q">How do I update Core?</div>
+                <div class="faq-a">Core checks for updates automatically in the background. You'll be notified when a new version is ready — no manual downloads required.</div>
+            </div>
+            <div class="faq-item reveal">
+                <div class="faq-q">Is there a Mac or Linux version?</div>
+                <div class="faq-a">macOS and Linux versions are currently in development. Join our waitlist to be notified at launch.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="section final-cta">
+    <div class="container">
+        <h2 class="final-cta-title reveal">
+            Ready to <span class="accent-word">browse better?</span>
+        </h2>
+        <a href="YOUR_DOWNLOAD_LINK_HERE" download class="download-btn reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download Core for Windows
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-main">
+            <div>
+                <div class="footer-brand">AETHER</div>
+                <p class="footer-tagline">
+                    Independent software for the next generation
+                    of digital creation and intelligence.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <span class="heading">PRODUCTS</span>
+                <a href="https://aether.isroot.in/vidclips">VidClips</a>
+                <a href="https://aether.isroot.in/matrix">Matrix</a>
+                <a href="https://aether.isroot.in/core">Core</a>
+            </div>
+
+            <div class="footer-column">
+                <span class="heading">PLATFORM</span>
+                <a href="https://aether.isroot.in/ecosys">Ecosystem</a>
+                <a href="https://aether.isroot.in">Home</a>
+            </div>
+
+            <div class="footer-column">
+                <span class="heading">CONNECT</span>
+                <a href="mailto:hello@aether.isroot.in">Contact ↗</a>
+                <a href="#">Twitter / X ↗</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 AETHER</span>
+            <span>BUILT FOR WHAT COMES NEXT</span>
+        </div>
+    </div>
+</footer>
+
+</main>
+
+<script>
+/* NAVIGATION BLUR */
+window.addEventListener("scroll", () => {
+    const nav = document.getElementById("nav");
+    if (window.scrollY > 30) nav.classList.add("scrolled");
+    else nav.classList.remove("scrolled");
+});
+
+/* SCROLL REVEALS */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+/* CURSOR GLOW */
+const glow = document.getElementById("cursorGlow");
+let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+
+window.addEventListener("mousemove", e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateGlow() {
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
+    glow.style.left = glowX + "px";
+    glow.style.top = glowY + "px";
+    requestAnimationFrame(animateGlow);
+}
+animateGlow();
+</script>
+
+</body>
+</html>
