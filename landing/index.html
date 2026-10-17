@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<meta name="description" content="Aether — We build software for what comes next. VidClips, Matrix, and Core.">
+<title>Aether — Software for what comes next.</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg: #08090b;
+    --bg2: #0d0f12;
+    --surface: #111419;
+    --surface2: #15181d;
+    --text: #f3f4f6;
+    --muted: #8d929b;
+    --dim: #555b65;
+    --line: rgba(255,255,255,.09);
+    --line2: rgba(255,255,255,.15);
+    --accent: #8ea2ff;
+    --accent2: #b7c2ff;
+    --max: 1400px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: Inter, Arial, sans-serif; overflow-x: hidden; }
+
+body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: .025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+::selection { background: #dce2ff; color: #08090b; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+
+/* NAVIGATION */
+.nav {
+    position: fixed; top: 0; left: 0; width: 100%; height: 78px; z-index: 100;
+    display: flex; align-items: center; border-bottom: 1px solid transparent; transition: .35s ease;
+}
+.nav.scrolled { background: rgba(8,9,11,.78); backdrop-filter: blur(18px); border-bottom-color: var(--line); }
+.nav-inner { width: min(var(--max), calc(100% - 56px)); margin: auto; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 13px; font-weight: 700; letter-spacing: -.04em; }
+.brand-mark { width: 30px; height: 30px; }
+.brand-name { font-size: 16px; }
+.nav-links { display: flex; align-items: center; gap: 34px; color: #aeb2b9; font-size: 13px; }
+.nav-links a { transition: color .2s ease; }
+.nav-links a:hover { color: white; }
+.nav-right { display: flex; align-items: center; gap: 18px; }
+.nav-product {
+    padding: 10px 15px; border: 1px solid var(--line2); border-radius: 100px; font-size: 12px; transition: .25s ease;
+}
+.nav-product:hover { background: white; color: black; }
+
+/* GLOBAL */
+.container { width: min(var(--max), calc(100% - 56px)); margin: auto; }
+.mono { font-family: "DM Mono", monospace; text-transform: uppercase; letter-spacing: .13em; font-size: 10px; }
+.label { color: var(--muted); }
+.accent { color: var(--accent); }
+.section { position: relative; padding: 170px 0; border-top: 1px solid var(--line); }
+.reveal { opacity: 0; transform: translateY(35px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* HERO */
+.hero { min-height: 100vh; padding-top: 150px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+.hero::after {
+    content: ""; position: absolute; width: 800px; height: 800px; right: -350px; top: 80px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(111,130,255,.12) 0%, rgba(111,130,255,.04) 30%, transparent 70%); pointer-events: none;
+}
+.hero-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 45px; }
+.hero-location { color: var(--dim); }
+.hero-title { max-width: 1180px; font-size: clamp(58px, 8.3vw, 138px); line-height: .9; letter-spacing: -.075em; font-weight: 600; position: relative; z-index: 2; }
+.hero-title span { display: block; }
+.hero-title .indent { margin-left: 15%; }
+.hero-title .thin { font-weight: 400; color: #aeb2b9; }
+.hero-bottom { display: grid; grid-template-columns: 1fr 360px; gap: 40px; margin-top: 85px; align-items: end; }
+.hero-description { max-width: 580px; color: #979ca5; font-size: 16px; line-height: 1.7; }
+.hero-cta { justify-self: end; }
+.button { display: inline-flex; align-items: center; gap: 20px; border: 1px solid var(--line2); padding: 15px 18px; font-size: 12px; transition: .3s ease; }
+.button span:last-child { font-size: 17px; transition: transform .3s ease; }
+.button:hover { background: #f4f4f4; color: #08090b; }
+.button:hover span:last-child { transform: translate(4px,-4px); }
+
+/* HERO GRAPHIC */
+.hero-grid { position: absolute; right: -5%; bottom: 3%; width: 48vw; height: 48vw; max-width: 680px; max-height: 680px; opacity: .35; pointer-events: none; }
+.grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px); background-size: 45px 45px; mask-image: radial-gradient(circle, black 20%, transparent 72%); }
+.orbit { position: absolute; inset: 12%; border: 1px solid rgba(170,180,255,.25); border-radius: 50%; animation: rotate 30s linear infinite; }
+.orbit.two { inset: 24%; animation-duration: 20s; animation-direction: reverse; }
+.orbit.three { inset: 36%; animation-duration: 13s; }
+.core-graphic { position: absolute; width: 17%; height: 17%; left: 41.5%; top: 41.5%; border: 1px solid rgba(190,200,255,.5); transform: rotate(45deg); box-shadow: 0 0 60px rgba(130,150,255,.18); animation: pulse 4s ease-in-out infinite; }
+.core-graphic::after { content: ""; position: absolute; inset: 25%; background: rgba(180,190,255,.75); }
+@keyframes rotate { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%,100% { transform: rotate(45deg) scale(1); } 50% { transform: rotate(45deg) scale(1.15); } }
+
+/* INTRO */
+.intro { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
+.section-number { color: var(--dim); }
+.intro-title { font-size: clamp(38px, 5vw, 76px); line-height: .98; letter-spacing: -.055em; max-width: 900px; }
+.intro-title em { font-style: normal; color: #777d87; }
+
+/* ECOSYSTEM GRID */
+.ecosystem-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px;
+}
+.eco-card {
+    display: flex; flex-direction: column; gap: 16px; padding: 32px; border: 1px solid var(--line);
+    background: var(--surface); border-radius: 16px; transition: all .3s ease; text-decoration: none;
+}
+.eco-card:hover { border-color: var(--accent); background: var(--surface2); transform: translateY(-4px); }
+.eco-icon { font-size: 28px; margin-bottom: 8px; }
+.eco-card h3 { font-size: 24px; font-weight: 600; letter-spacing: -.03em; }
+.eco-card p { color: var(--muted); font-size: 14px; line-height: 1.6; flex-grow: 1; }
+.eco-link { color: var(--accent); font-size: 12px; font-family: "DM Mono", monospace; letter-spacing: .05em; display: flex; align-items: center; gap: 6px; }
+
+/* PRODUCT SECTIONS */
+.product-header { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; margin-bottom: 90px; }
+.product-meta { display: flex; flex-direction: column; gap: 10px; }
+.product-meta strong { font-size: 20px; font-weight: 500; }
+.product-title { font-size: clamp(55px, 8vw, 120px); line-height: .86; letter-spacing: -.075em; font-weight: 600; }
+.product-title small { display: block; margin-top: 22px; color: var(--accent); font-family: "DM Mono", monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+
+/* VISUALS */
+.product-visual {
+    position: relative; min-height: 550px; border: 1px solid var(--line); background: radial-gradient(circle at 75% 20%, rgba(105,125,255,.08), transparent 28%), #0b0d10;
+    overflow: hidden; border-radius: 12px;
+}
+.vc-top { height: 54px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.vc-brand { font-size: 12px; font-weight: 600; letter-spacing: -.02em; }
+.vc-status { display: flex; align-items: center; gap: 8px; color: #7e8490; font-size: 10px; font-family: "DM Mono", monospace; }
+.status-dot { width: 5px; height: 5px; border-radius: 50%; background: #a9b6ff; box-shadow: 0 0 10px #a9b6ff; }
+
+/* Matrix Chat Visual */
+.matrix-chat { padding: 30px; display: flex; flex-direction: column; gap: 20px; height: 496px; }
+.chat-msg { max-width: 80%; padding: 16px 20px; border-radius: 12px; font-size: 14px; line-height: 1.6; animation: fadeIn .5s ease; }
+.chat-msg.user { align-self: flex-end; background: var(--surface2); border: 1px solid var(--line); color: var(--text); }
+.chat-msg.ai { align-self: flex-start; background: rgba(142, 162, 255, 0.08); border: 1px solid rgba(142, 162, 255, 0.2); color: var(--text); }
+.model-selector { display: flex; gap: 10px; margin-bottom: 10px; }
+.model-badge { padding: 6px 12px; border: 1px solid var(--line); border-radius: 100px; font-size: 10px; font-family: "DM Mono", monospace; color: var(--muted); }
+.model-badge.active { border-color: var(--accent); color: var(--accent); background: rgba(142, 162, 255, 0.1); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Core Browser Visual */
+.core-browser { display: flex; flex-direction: column; height: 496px; }
+.browser-bar { height: 44px; border-bottom: 1px solid var(--line); display: flex; align-items: center; padding: 0 16px; gap: 12px; background: rgba(255,255,255,0.02); }
+.browser-dots { display: flex; gap: 6px; }
+.browser-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line2); }
+.browser-dot.red { background: #ff5f57; }
+.browser-dot.yellow { background: #febc2e; }
+.browser-dot.green { background: #28c840; }
+.browser-url { flex: 1; height: 26px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; display: flex; align-items: center; padding: 0 12px; font-size: 11px; color: var(--muted); font-family: "DM Mono", monospace; }
+.browser-content { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
+.browser-content::before { content: "CORE"; font-size: 48px; font-weight: 800; letter-spacing: -.05em; color: rgba(255,255,255,0.03); }
+
+.product-description { max-width: 600px; margin-top: 55px; margin-left: auto; color: #9297a0; font-size: 16px; line-height: 1.8; }
+
+/* TECHNOLOGY STACK (NEW) */
+.tech-stack {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 50px;
+    padding-top: 50px; border-top: 1px solid var(--line);
+}
+.tech-item { display: flex; flex-direction: column; gap: 8px; }
+.tech-item strong { font-size: 15px; font-weight: 600; letter-spacing: -.02em; }
+.tech-item p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+/* MANIFESTO */
+.manifesto { min-height: 80vh; display: flex; align-items: center; }
+.manifesto-text { max-width: 1200px; font-size: clamp(50px, 7vw, 108px); line-height: .94; letter-spacing: -.07em; }
+.manifesto-text .muted { color: #555b64; }
+.manifesto-text .accent-word { color: var(--accent2); }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--line); padding: 70px 0 35px; }
+.footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; padding-bottom: 100px; }
+.footer-brand { font-size: clamp(50px, 7vw, 100px); letter-spacing: -.08em; font-weight: 600; }
+.footer-tagline { color: #707680; max-width: 300px; line-height: 1.7; font-size: 13px; margin-top: 25px; }
+.footer-column { display: flex; flex-direction: column; gap: 14px; }
+.footer-column a { color: #858a93; font-size: 13px; transition: color .2s ease; }
+.footer-column a:hover { color: white; }
+.footer-column .heading { color: #444a53; margin-bottom: 8px; font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .1em; }
+.footer-bottom { border-top: 1px solid var(--line); padding-top: 25px; display: flex; justify-content: space-between; color: #50555e; font-family: "DM Mono", monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
+
+/* CURSOR GLOW */
+.cursor-glow {
+    position: fixed; width: 350px; height: 350px; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle, rgba(130,145,255,.055), transparent 65%); transform: translate(-50%,-50%); transition: opacity .3s;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .container, .nav-inner { width: min(100% - 34px, var(--max)); }
+    .nav-links { display: none; }
+    .hero { padding-top: 130px; min-height: 900px; }
+    .hero-top { margin-bottom: 30px; }
+    .hero-title { font-size: clamp(52px, 14vw, 100px); }
+    .hero-title .indent { margin-left: 0; }
+    .hero-bottom { grid-template-columns: 1fr; margin-top: 55px; }
+    .hero-cta { justify-self: start; }
+    .hero-grid { width: 100vw; height: 100vw; right: -35%; bottom: 0; opacity: .2; }
+    .section { padding: 110px 0; }
+    .intro, .product-header { grid-template-columns: 1fr; gap: 45px; }
+    .ecosystem-grid { grid-template-columns: 1fr; }
+    .tech-stack { grid-template-columns: 1fr 1fr; }
+    .product-title { font-size: 19vw; }
+    .footer-main { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 550px) {
+    .nav { height: 65px; }
+    .nav-product { padding: 8px 11px; }
+    .hero { min-height: 850px; }
+    .hero-title { font-size: 18vw; }
+    .hero-description { font-size: 14px; }
+    .tech-stack { grid-template-columns: 1fr; }
+    .footer-main { grid-template-columns: 1fr; padding-bottom: 70px; }
+    .footer-brand { grid-column: auto; }
+    .footer-bottom { flex-direction: column; gap: 10px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="https://aether.isroot.in" class="brand">
+            <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+                <rect x="10" y="10" width="20" height="20" transform="rotate(45 20 20)" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M20 7V33M7 20H33" stroke="currentColor" stroke-width=".7" opacity=".5"/>
+            </svg>
+            <span class="brand-name">AETHER</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="https://aether.isroot.in/ecosys">Ecosystem</a>
+            <a href="https://aether.isroot.in/vidclips">VidClips</a>
+            <a href="https://aether.isroot.in/matrix">Matrix</a>
+            <a href="https://aether.isroot.in/core">Core</a>
+        </div>
+
+        <div class="nav-right">
+            <a href="https://aether.isroot.in/vidclips" class="nav-product">LAUNCH APP ↗</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-top">
+            <div class="mono label">AETHER / SOFTWARE STUDIO</div>
+            <div class="mono hero-location">01 — 2026</div>
+        </div>
+
+        <h1 class="hero-title reveal">
+            <span>We build</span>
+            <span class="indent thin">software for</span>
+            <span>what comes next<span class="accent">.</span></span>
+        </h1>
+
+        <div class="hero-bottom reveal">
+            <p class="hero-description">
+                Aether is an independent technology company building intelligent software. 
+                From AI video analysis to next-generation conversational models and browsing, 
+                we create tools that make complex things understandable.
+            </p>
+
+            <div class="hero-cta">
+                <a href="https://aether.isroot.in/ecosys" class="button">
+                    <span>Explore Ecosystem</span><span>↘</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-grid">
+        <div class="grid-lines"></div>
+        <div class="orbit"></div>
+        <div class="orbit two"></div>
+        <div class="orbit three"></div>
+        <div class="core-graphic"></div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container intro">
+        <div class="mono section-number reveal">00 / THE IDEA</div>
+        <div class="reveal">
+            <h2 class="intro-title">
+                Technology should make
+                complex things <em>understandable.</em>
+                <br><br>
+                Not louder. Not heavier.
+                <br>
+                <span class="accent">Smarter.</span>
+            </h2>
+        </div>
+    </div>
+</section>
+
+<!-- ECOSYSTEM GRID -->
+<section class="section" id="ecosystem" style="padding-top: 80px;">
+    <div class="container">
+        <div class="product-header reveal">
+            <div class="product-meta">
+                <div class="mono label">AETHER / ECOSYSTEM</div>
+                <strong>00</strong>
+                <div class="mono label">THE SUITE</div>
+            </div>
+            <div>
+                <h2 class="product-title">
+                    Three tools.
+                    <small>One unified philosophy.</small>
+                </h2>
+            </div>
+        </div>
+
+        <div class="ecosystem-grid reveal">
+            <a href="https://aether.isroot.in/vidclips" class="eco-card">
+                <div class="eco-icon">🎬</div>
+                <h3>VidClips</h3>
+                <p>AI-powered video analysis and structural understanding. Turn footage into actionable data.</p>
+                <span class="eco-link">Explore VidClips ↗</span>
+            </a>
+            <a href="https://aether.isroot.in/matrix" class="eco-card">
+                <div class="eco-icon">🧠</div>
+                <h3>Matrix</h3>
+                <p>Advanced conversational AI featuring 3 specialized models for reasoning, coding, and creativity.</p>
+                <span class="eco-link">Enter Matrix ↗</span>
+            </a>
+            <a href="https://aether.isroot.in/core" class="eco-card">
+                <div class="eco-icon">🌐</div>
+                <h3>Core</h3>
+                <p>A next-generation, Chrome-like browser built from the ground up for speed, privacy, and focus.</p>
+                <span class="eco-link">Discover Core ↗</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- VIDCLIPS DEEP DIVE -->
+<section class="section" id="vidclips">
+    <div class="container">
+        <div class="product-header reveal">
+            <div class="product-meta">
+                <div class="mono label">AETHER / PRODUCTS</div>
+                <strong>01</strong>
+                <div class="mono label">VIDEO INTELLIGENCE</div>
+            </div>
+            <div>
+                <h2 class="product-title">
+                    VidClips
+                    <small>Understand video at a deeper level.</small>
+                </h2>
+            </div>
+        </div>
+
+        <div class="product-visual reveal">
+            <div class="vc-top">
+                <div class="vc-brand">VIDCLIPS ENGINE</div>
+                <div class="vc-status">
+                    <span class="status-dot"></span>
+                    ANALYSIS ACTIVE
+                </div>
+            </div>
+            <div style="padding: 40px; display: flex; align-items: center; justify-content: center; height: 496px; color: var(--dim); font-family: 'DM Mono', monospace; font-size: 12px;">
+                [ Interactive Video Analysis Dashboard Preview ]
+            </div>
+        </div>
+
+        <div class="product-description reveal">
+            VidClips explores a different way to work with video: instead of treating footage as a flat file, 
+            it analyzes the structure inside it—scenes, motion, objects, text, depth, color and audio—turning 
+            visual information into something machines and creators can understand.
+        </div>
+
+        <!-- NEW: TECHNOLOGY STACK -->
+        <div class="tech-stack reveal">
+            <div class="tech-item">
+                <div class="mono label">01</div>
+                <strong>Computer Vision</strong>
+                <p>Advanced object detection, spatial mapping, and real-time scene segmentation.</p>
+            </div>
+            <div class="tech-item">
+                <div class="mono label">02</div>
+                <strong>Temporal Analysis</strong>
+                <p>Frame-by-frame motion tracking to understand context and pacing over time.</p>
+            </div>
+            <div class="tech-item">
+                <div class="mono label">03</div>
+                <strong>Multi-Modal AI</strong>
+                <p>Synchronized processing of visual data, audio signals, and text (OCR) extraction.</p>
+            </div>
+            <div class="tech-item">
+                <div class="mono label">04</div>
+                <strong>Optimized Inference</strong>
+                <p>High-performance processing engine built for speed and low-latency analysis.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MATRIX DEEP DIVE -->
+<section class="section" id="matrix">
+    <div class="container">
+        <div class="product-header reveal">
+            <div class="product-meta">
+                <div class="mono label">AETHER / PRODUCTS</div>
+                <strong>02</strong>
+                <div class="mono label">CONVERSATIONAL AI</div>
+            </div>
+            <div>
+                <h2 class="product-title">
+                    Matrix
+                    <small>Three models. Infinite possibilities.</small>
+                </h2>
+            </div>
+        </div>
+
+        <div class="product-visual reveal">
+            <div class="vc-top">
+                <div class="vc-brand">MATRIX INTERFACE</div>
+                <div class="vc-status">
+                    <span class="status-dot"></span>
+                    SYSTEM ONLINE
+                </div>
+            </div>
+            <div class="matrix-chat">
+                <div class="model-selector">
+                    <span class="model-badge active">MATRIX-FAST</span>
+                    <span class="model-badge">MATRIX-PRO</span>
+                    <span class="model-badge">MATRIX-CODE</span>
+                </div>
+                <div class="chat-msg user">Analyze the structural components of this video file and extract key scenes.</div>
+                <div class="chat-msg ai">
+                    Processing video stream...<br><br>
+                    <strong>Analysis Complete:</strong><br>
+                    • 4 distinct scenes detected<br>
+                    • Motion tracking mapped to 12 objects<br>
+                    • Audio signal normalized<br><br>
+                    Would you like me to generate clips based on high-motion thresholds?
+                </div>
+            </div>
+        </div>
+
+        <div class="product-description reveal">
+            Matrix is our advanced AI chatbot, engineered with 3 distinct underlying models. 
+            Whether you need lightning-fast responses, deep logical reasoning, or specialized 
+            coding assistance, Matrix adapts to your workflow seamlessly.
+        </div>
+    </div>
+</section>
+
+<!-- CORE DEEP DIVE -->
+<section class="section" id="core">
+    <div class="container">
+        <div class="product-header reveal">
+            <div class="product-meta">
+                <div class="mono label">AETHER / PRODUCTS</div>
+                <strong>03</strong>
+                <div class="mono label">NEXT-GEN BROWSING</div>
+            </div>
+            <div>
+                <h2 class="product-title">
+                    Core
+                    <small>The web, reimagined.</small>
+                </h2>
+            </div>
+        </div>
+
+        <div class="product-visual reveal">
+            <div class="core-browser">
+                <div class="browser-bar">
+                    <div class="browser-dots">
+                        <div class="browser-dot red"></div>
+                        <div class="browser-dot yellow"></div>
+                        <div class="browser-dot green"></div>
+                    </div>
+                    <div class="browser-url">🔒 aether.isroot.in/core</div>
+                </div>
+                <div class="browser-content">
+                    <!-- Placeholder for Core Browser Screenshot -->
+                </div>
+            </div>
+        </div>
+
+        <div class="product-description reveal">
+            Core is a Chrome-like browser built from the ground up. It strips away the bloat, 
+            prioritizes user privacy, and integrates natively with the Aether ecosystem, 
+            giving you a faster, cleaner, and more intelligent way to navigate the web.
+        </div>
+    </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="section manifesto" id="about">
+    <div class="container">
+        <div class="mono label reveal">04 / WHY AETHER</div>
+        <h2 class="manifesto-text reveal">
+            We don't want to build
+            <span class="muted">more software.</span>
+            <br><br>
+            We want to build
+            software that makes
+            <span class="accent-word">more possible.</span>
+        </h2>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-main">
+            <div>
+                <div class="footer-brand">AETHER</div>
+                <p class="footer-tagline">
+                    Independent software for the next generation
+                    of digital creation and intelligence.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <span class="heading">PRODUCTS</span>
+                <a href="https://aether.isroot.in/vidclips">VidClips</a>
+                <a href="https://aether.isroot.in/matrix">Matrix</a>
+                <a href="https://aether.isroot.in/core">Core</a>
+            </div>
+
+            <div class="footer-column">
+                <span class="heading">RESOURCES</span>
+                <a href="https://aether.isroot.in/ecosys">Ecosystem</a>
+                <a href="#about">Manifesto</a>
+            </div>
+
+            <div class="footer-column">
+                <span class="heading">CONNECT</span>
+                <a href="mailto:hello@aether.isroot.in">Contact ↗</a>
+                <a href="#">Twitter / X ↗</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 AETHER</span>
+            <span>BUILT FOR WHAT COMES NEXT</span>
+        </div>
+    </div>
+</footer>
+
+</main>
+
+<script>
+/* NAVIGATION BLUR */
+window.addEventListener("scroll", () => {
+    const nav = document.getElementById("nav");
+    if (window.scrollY > 30) {
+        nav.classList.add("scrolled");
+    } else {
+        nav.classList.remove("scrolled");
+    }
+});
+
+/* SCROLL REVEALS */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => {
+    observer.observe(el);
+});
+
+/* CURSOR LIGHT */
+const glow = document.getElementById("cursorGlow");
+let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+
+window.addEventListener("mousemove", e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateGlow() {
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
+    glow.style.left = glowX + "px";
+    glow.style.top = glowY + "px";
+    requestAnimationFrame(animateGlow);
+}
+animateGlow();
+
+/* SMOOTH ANCHOR OFFSET */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", e => {
+        const id = link.getAttribute("href");
+        if (id === "#") return;
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        window.scrollTo({ top: target.offsetTop - 80, behavior: "smooth" });
+    });
+});
+</script>
+
+</body>
+</html>
