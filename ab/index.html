@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090b">
+<meta name="description" content="AirBridge by Aether — move files between devices with a simple, connected workflow.">
+<title>AirBridge | Aether</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#08090b; --bg2:#0d0f12; --surface:#111419; --surface2:#15181d;
+  --text:#f3f4f6; --muted:#8d929b; --dim:#555b65; --line:rgba(255,255,255,.09);
+  --line2:rgba(255,255,255,.15); --accent:#39c6aa; --accent2:#72e0cb; --max:1400px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:95px}
+body{background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}button{font:inherit}
+.container{width:min(var(--max),calc(100% - 56px));margin:auto}
+.mono{font-family:"DM Mono",monospace;text-transform:uppercase;letter-spacing:.13em;font-size:10px}
+.muted{color:var(--muted)}.accent{color:var(--accent)}
+.nav{position:fixed;top:0;left:0;width:100%;height:78px;z-index:100;display:flex;align-items:center;border-bottom:1px solid transparent;transition:.3s}
+.nav.scrolled{background:rgba(8,9,11,.82);backdrop-filter:blur(18px);border-bottom-color:var(--line)}
+.nav-inner{width:min(var(--max),calc(100% - 56px));margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
+.brand-mark{width:30px;height:30px;display:block}
+.nav-links{display:flex;align-items:center;gap:26px;color:#aeb2b9;font-size:12px}
+.nav-links a,.footer-links a{transition:color .2s}
+.nav-links a:hover,.footer-links a:hover{color:var(--accent2)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.pill{border:1px solid var(--line2);border-radius:100px;padding:10px 15px;font-size:11px;white-space:nowrap;transition:.2s}
+.pill:hover{background:#f3f4f6;color:#08090b}
+.hero{min-height:95vh;padding:160px 0 95px;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-250px;top:100px;width:760px;height:760px;border-radius:50%;background:radial-gradient(circle,rgba(57,198,170,.15),rgba(57,198,170,.035) 35%,transparent 70%);pointer-events:none}
+.hero-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center;position:relative;z-index:1}
+.eyebrow{color:var(--muted);display:flex;gap:14px;align-items:center;margin-bottom:35px}
+.eyebrow:before{content:"";width:24px;height:1px;background:var(--accent)}
+h1{font-size:clamp(58px,8.4vw,126px);line-height:.88;letter-spacing:-.08em;font-weight:600;max-width:900px}
+h1 .second{display:block;color:#aeb2b9;font-weight:400;margin-top:10px}
+.hero-copy{max-width:560px;color:#979ca5;font-size:16px;line-height:1.8;margin-top:34px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.button{display:inline-flex;align-items:center;gap:22px;padding:15px 18px;border:1px solid var(--line2);font-size:12px;transition:.25s}
+.button.primary{background:var(--accent);border-color:var(--accent);color:#06110f;font-weight:700}
+.button:hover{transform:translateY(-2px);border-color:var(--accent2)}
+.hero-art{aspect-ratio:1/1;max-width:520px;width:100%;justify-self:end;position:relative;display:grid;place-items:center}
+.art-grid{position:absolute;inset:4%;background-image:linear-gradient(rgba(255,255,255,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.065) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(circle,black 10%,transparent 72%)}
+.orbit{position:absolute;inset:13%;border:1px solid rgba(57,198,170,.35);border-radius:50%;transform:rotate(-28deg)}
+.orbit.two{inset:24%;border-color:rgba(114,224,203,.3);transform:rotate(30deg)}
+.logo-tile{position:relative;width:66%;aspect-ratio:1;border-radius:24%;background:linear-gradient(145deg,#174e53,#10294b 70%);box-shadow:0 30px 100px rgba(0,0,0,.35);display:grid;place-items:center;border:1px solid rgba(114,224,203,.2)}
+.logo-tile svg{width:78%;height:78%}
+.section{padding:125px 0;border-top:1px solid var(--line)}
+.section-heading{display:grid;grid-template-columns:1fr 2fr;gap:60px;margin-bottom:55px}
+.section-title{font-size:clamp(38px,5.5vw,76px);line-height:.98;letter-spacing:-.065em;font-weight:500}
+.section-title em{font-style:normal;color:#747b85}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:30px;min-height:245px;transition:.25s}
+.card:hover{border-color:rgba(57,198,170,.6);transform:translateY(-4px);background:var(--surface2)}
+.card-icon{width:42px;height:42px;border:1px solid rgba(57,198,170,.35);border-radius:12px;display:grid;place-items:center;color:var(--accent);font-size:19px;margin-bottom:35px}
+.card h3{font-size:21px;letter-spacing:-.035em;margin-bottom:12px}
+.card p{color:var(--muted);font-size:13px;line-height:1.75}
+.workflow{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.step{padding:30px;border-right:1px solid var(--line);background:linear-gradient(145deg,rgba(57,198,170,.05),transparent)}
+.step:last-child{border-right:0}
+.step-num{color:var(--accent);margin-bottom:45px}
+.step h3{font-size:19px;margin-bottom:10px}
+.step p{font-size:13px;color:var(--muted);line-height:1.7}
+.callout{padding:60px;border:1px solid rgba(57,198,170,.22);border-radius:16px;background:radial-gradient(circle at 90% 10%,rgba(57,198,170,.12),transparent 38%),var(--surface);display:flex;justify-content:space-between;align-items:center;gap:30px}
+.callout h2{font-size:clamp(32px,4vw,58px);letter-spacing:-.06em;line-height:1}
+.callout p{color:var(--muted);font-size:14px;line-height:1.7;max-width:550px;margin-top:18px}
+.footer{border-top:1px solid var(--line);padding:55px 0 28px}
+.footer-top{display:flex;justify-content:space-between;gap:30px;align-items:flex-start;padding-bottom:50px}
+.footer-title{font-size:40px;letter-spacing:-.07em;font-weight:600}
+.footer-copy{max-width:360px;color:var(--muted);font-size:12px;line-height:1.7;margin-top:12px}
+.footer-links{display:flex;flex-wrap:wrap;gap:24px;color:var(--muted);font-size:12px}
+.footer-bottom{border-top:1px solid var(--line);padding-top:22px;display:flex;justify-content:space-between;gap:20px;color:var(--dim)}
+@media(max-width:900px){.nav-links{display:none}.hero-layout{grid-template-columns:1fr}.hero-art{max-width:400px;justify-self:center;margin-top:20px}.hero{padding-top:130px}.section-heading{grid-template-columns:1fr;gap:24px}.feature-grid{grid-template-columns:1fr}.workflow{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}.callout{padding:35px;align-items:flex-start;flex-direction:column}}
+@media(max-width:550px){.container,.nav-inner{width:calc(100% - 34px)}.nav{height:65px}.nav-right .pill:first-child{display:none}h1{font-size:18vw}.hero-copy{font-size:14px}.section{padding:85px 0}.footer-top,.footer-bottom{flex-direction:column}.footer-links{gap:16px}.callout{padding:26px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="https://aether.isroot.in" aria-label="Aether home">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="10" y="10" width="20" height="20" transform="rotate(45 20 20)" stroke="currentColor" stroke-width="1.4"/><path d="M20 7V33M7 20H33" stroke="currentColor" stroke-width=".7" opacity=".5"/></svg>
+      <span>AETHER <span style="color:var(--dim);font-weight:400">/</span> AIRBRIDGE</span>
+    </a>
+    <div class="nav-links" aria-label="Aether navigation">
+      <a href="https://aether.isroot.in">Home</a>
+      <a href="https://aether.isroot.in/ecosys">Ecosystem</a>
+      <a href="https://aether.isroot.in/vidclips">VidClips</a>
+      <a href="https://aether.isroot.in/matrix">Matrix</a>
+      <a href="https://aether.isroot.in/core">Core</a>
+      <a href="#features">AirBridge features</a>
+    </div>
+    <div class="nav-right">
+      <a class="pill" href="https://aether.isroot.in/ecosys">AETHER ↗</a>
+      <a class="pill" href="#download">DOWNLOAD APK ↓</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<section class="hero">
+  <div class="container hero-layout">
+    <div>
+      <div class="eyebrow mono">AETHER / FILE TRANSFER · RELEASE 1</div>
+      <h1>Move files.<span class="second">Without friction.</span></h1>
+      <p class="hero-copy">AirBridge makes moving files between devices feel simple. Start a transfer, connect through your local network, and use a browser when that is the easiest way to get the job done.</p>
+      <div class="actions">
+        <a class="button primary" href="#download">Explore AirBridge <span>↘</span></a>
+      </div>
+      <p class="mono muted" style="margin-top:26px">ANDROID · SIMPLE TRANSFERS · QR CONNECT</p>
+    </div>
+    <div class="hero-art" aria-label="Abstract AirBridge connected-device logo">
+      <div class="art-grid"></div><div class="orbit"></div><div class="orbit two"></div>
+      <div class="logo-tile">
+        <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+          <rect x="13" y="30" width="36" height="70" rx="8" stroke="#39c6aa" stroke-width="5"/>
+          <path d="M23 38h16M24 91h14" stroke="#39c6aa" stroke-width="3" stroke-linecap="round"/>
+          <rect x="72" y="17" width="35" height="70" rx="8" stroke="#39c6aa" stroke-width="5"/>
+          <path d="M82 25h15" stroke="#39c6aa" stroke-width="3" stroke-linecap="round"/>
+          <path d="M24 78c4-24 19-37 41-37h16V29l22 16-22 16V50H65C51 50 41 60 38 78" stroke="#39c6aa" stroke-width="6" stroke-linejoin="round"/>
+          <path d="M44 78c4-12 11-19 21-19h8M54 78c3-6 6-9 12-9" stroke="#58bce4" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-heading">
+      <div class="mono muted">01 / THE EXPERIENCE</div>
+      <h2 class="section-title">A calmer way to move <em>your files.</em></h2>
+    </div>
+    <div class="feature-grid">
+      <article class="card"><div class="card-icon">↗</div><h3>Send files</h3><p>Select files in AirBridge and share a local link for downloading them from another device on the same network.</p></article>
+      <article class="card"><div class="card-icon">↙</div><h3>Receive files</h3><p>Open the receive page and upload files from a browser on a connected device to your Android phone.</p></article>
+      <article class="card"><div class="card-icon">⌗</div><h3>Connect with QR</h3><p>Scan a compatible AirBridge link QR code to open the connection in your browser with a confirmation step.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-heading">
+      <div class="mono muted">02 / HOW IT WORKS</div>
+      <h2 class="section-title">Three steps.<br><em>Less friction.</em></h2>
+    </div>
+    <div class="workflow">
+      <article class="step"><div class="step-num mono">STEP 01</div><h3>Choose a direction</h3><p>Pick Send Files or Receive Files in the Android app.</p></article>
+      <article class="step"><div class="step-num mono">STEP 02</div><h3>Connect your devices</h3><p>Use the provided local link or QR code from a device that can reach the same network address.</p></article>
+      <article class="step"><div class="step-num mono">STEP 03</div><h3>Transfer in your browser</h3><p>Download or upload through the browser page. Keep both devices on a network that allows them to communicate.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="download">
+  <div class="container">
+    <div class="callout">
+      <div><div class="mono accent" style="margin-bottom:22px">03 / AIRBRIDGE RELEASE 1</div><h2>Ready to bridge<br>your devices?</h2><p>AirBridge is in its first release stage. Download the Android installer using the button below. Add your direct APK download link in the DOWNLOAD_URL setting in the page code.</p></div>
+      <div class="actions" style="margin-top:0">
+        <a class="button primary" id="download-apk" href="#download">Download Android APK <span>↓</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div><div class="footer-title">AIRBRIDGE<span class="accent">.</span></div><p class="footer-copy">Aether software for moving files with less friction. A separate product page that fits the Aether visual language.</p></div>
+      <div class="footer-links">
+        <a href="https://aether.isroot.in">Aether Home ↗</a>
+        <a href="https://aether.isroot.in/ecosys">Ecosystem ↗</a>
+        <a href="https://aether.isroot.in/vidclips">VidClips ↗</a>
+        <a href="https://aether.isroot.in/matrix">Matrix ↗</a>
+        <a href="https://aether.isroot.in/core">Core ↗</a>
+      </div>
+    </div>
+    <div class="footer-bottom mono"><span>© 2026 AETHER / AIRBRIDGE</span><span>BUILT FOR WHAT COMES NEXT</span></div>
+  </div>
+</footer>
+<script>
+// PASTE YOUR DIRECT APK DOWNLOAD LINK BETWEEN THE QUOTES BELOW.
+// Example: "https://your-domain.com/downloads/airbridge.apk"
+const DOWNLOAD_URL = "https://download1523.mediafire.com/9o9mhsv5o1lg2a29nu8ZxPnft-wFTRGY--E4QXjIEPAgsyFyg9rzg5GLd07P1WCumvz_j-5skBcK5gaeXPf0C9gygOUa_n6IcLYW2FpDbSncJv9oDtKHtY_7jwmK63UqlIyQhIeBswuKLJsE4HJOBMDPdoK_bAcqDwT47oEC04nMUkI/2jqt8be6iwdfzng/AirBridge.apk";
+
+const downloadButton = document.getElementById("download-apk");
+if (DOWNLOAD_URL && !DOWNLOAD_URL.includes("PASTE_YOUR_DIRECT_APK_DOWNLOAD_LINK_HERE")) {
+  downloadButton.href = DOWNLOAD_URL;
+  downloadButton.target = "_blank";
+  downloadButton.rel = "noopener";
+} else {
+  downloadButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    alert("The APK download link has not been set yet. Edit DOWNLOAD_URL in index.html and paste your direct APK download link.");
+  });
+}
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>30),{passive:true});
+</script>
+</body>
+</html>
