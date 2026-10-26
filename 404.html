@@ -1,549 +1,218 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="claude:viewport-fit-sides" content="cover">
-<title>404 · Aether</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Aether — 404 Page Not Found. The coordinates you requested do not exist.">
+<title>404 — Aether</title>
+
 <style>
-  :root {
-    --bg-deep: #030508;
-    --card-bg: #080c14;
-    --sky: #0b1120;
-    --moon: #d5e2ff;
-    --accent: #e23b4a;
-    --practical: #f0c36a;
-    --fg: var(--moon);
-    color-scheme: dark;
-  }
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg-deep);
-    color: var(--fg);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    min-height: 100vh;
+:root {
+    --bg: #000000;
+    --bg2: #08090b;
+    --surface: rgba(15, 17, 23, 0.85);
+    --surface2: rgba(22, 26, 34, 0.95);
+    --text: #f3f4f6;
+    --muted: #8d929b;
+    --dim: #555b65;
+    --line: rgba(255,255,255,.09);
+    --line2: rgba(255,255,255,.18);
+    --accent: #00ffcc;
+    --accent-blue: #38bdf8;
+    --accent-glow: rgba(0, 255, 204, 0.25);
+    --max: 1400px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--text); font-family: Inter, Arial, sans-serif; overflow-x: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+
+/* Noise overlay */
+body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: .025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+::selection { background: var(--accent); color: #000; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+
+/* NAVIGATION */
+.nav {
+    position: fixed; top: 0; left: 0; width: 100%; height: 78px; z-index: 100;
+    display: flex; align-items: center; background: rgba(0,0,0,.85); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid var(--line);
+}
+.nav-inner { width: min(var(--max), calc(100% - 56px)); margin: auto; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 13px; font-weight: 700; letter-spacing: -.04em; }
+.brand-mark { width: 30px; height: 30px; color: var(--accent); }
+.brand-name { font-size: 16px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; }
+.nav-right { display: flex; align-items: center; gap: 18px; }
+.nav-product {
+    padding: 10px 18px; border: 1px solid var(--line2); border-radius: 100px; font-size: 12px; font-family: 'JetBrains Mono', monospace; transition: .25s ease;
+    background: rgba(0,0,0,0.5);
+}
+.nav-product:hover { background: var(--accent); color: black; border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+
+/* CONTAINER & 404 CONTENT */
+.container { width: min(var(--max), calc(100% - 56px)); margin: auto; }
+.mono { font-family: "DM Mono", monospace; text-transform: uppercase; letter-spacing: .13em; font-size: 10px; }
+.label { color: var(--muted); }
+.accent { color: var(--accent); }
+
+.not-found-section {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    padding: max(32px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) max(32px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px));
-    overflow: hidden;
-  }
-
-  header {
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
-  }
-
-  .brand {
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: var(--moon);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .brand span { color: var(--accent); }
-
-  .status-tag {
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    color: rgba(213, 226, 255, 0.5);
-    text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 4px 10px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .main-stage {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    aspect-ratio: 16 / 10;
-    background: var(--card-bg);
-    border: 1px solid rgba(231, 238, 252, 0.08);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    cursor: grab;
-  }
-  .main-stage:active {
-    cursor: grabbing;
-  }
-
-  canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  footer {
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
     text-align: center;
-    z-index: 10;
-  }
+    padding: 160px 24px 100px;
+    position: relative;
+}
 
-  .error-code {
-    font-size: 0.85rem;
+.error-code {
+    font-size: clamp(80px, 18vw, 220px);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    font-family: 'JetBrains Mono', monospace;
+    background: linear-gradient(135deg, var(--text) 30%, var(--dim));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 24px;
+}
+
+.error-title {
+    font-size: clamp(24px, 4vw, 42px);
     font-weight: 600;
-    letter-spacing: 0.25em;
-    color: var(--accent);
-    text-transform: uppercase;
-  }
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+}
 
-  .dialogue {
-    font-size: 1rem;
-    color: rgba(213, 226, 255, 0.85);
-    font-style: italic;
-    letter-spacing: 0.02em;
-    min-height: 1.5em;
-    max-width: 700px;
-    padding: 0 16px;
-  }
+.error-desc {
+    color: var(--muted);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    max-width: 540px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
 
-  .home-link {
-    margin-top: 6px;
+.button {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(213, 226, 255, 0.06);
-    border: 1px solid rgba(213, 226, 255, 0.15);
-    color: var(--moon);
-    padding: 10px 24px;
+    gap: 16px;
+    border: 1px solid var(--line2);
+    padding: 16px 28px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    transition: .3s ease;
+    background: rgba(20,20,25,0.8);
+    backdrop-filter: blur(10px);
     border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-  .home-link:hover {
-    background: var(--moon);
-    color: var(--bg-deep);
-    border-color: var(--moon);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(213, 226, 255, 0.2);
-  }
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.button span:last-child {
+    font-size: 16px;
+    transition: transform .3s ease;
+}
+
+.button:hover {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.button:hover span:last-child {
+    transform: translate(3px, -3px);
+}
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--line); padding: 40px 0; width: 100%; }
+.footer-inner { width: min(var(--max), calc(100% - 56px)); margin: auto; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-family: "DM Mono", monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; }
+
+/* CURSOR GLOW */
+.cursor-glow {
+    position: fixed; width: 350px; height: 350px; border-radius: 50%; pointer-events: none; z-index: 1;
+    background: radial-gradient(circle, rgba(0,255,204,.06), transparent 65%); transform: translate(-50%,-50%); transition: opacity .3s;
+}
 </style>
 </head>
+
 <body>
 
-<header>
-  <a href="https://aether.isroot.in" class="brand" target="_blank">AETHER<span>.</span>ISROOT.IN</a>
-  <span class="status-tag">Error 404</span>
-</header>
+<div class="cursor-glow" id="cursorGlow"></div>
 
-<div class="main-stage" id="stage">
-  <canvas id="animeCanvas" width="1600" height="1000"></canvas>
-</div>
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="http://aether.isroot.in/" class="brand">
+            <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+                <rect x="10" y="10" width="20" height="20" transform="rotate(45 20 20)" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M20 7V33M7 20H33" stroke="currentColor" stroke-width=".7" opacity=".5"/>
+            </svg>
+            <span class="brand-name">AETHER</span>
+        </a>
 
-<footer>
-  <div class="error-code">Page Not Found</div>
-  <div class="dialogue" id="quoteDialogue">"Loading quote..."</div>
-  <a href="https://aether.isroot.in" class="home-link" target="_blank">Return to Aether</a>
+        <div class="nav-right">
+            <a href="http://aether.isroot.in/" class="nav-product">Return Home ↗</a>
+        </div>
+    </div>
+</nav>
+
+<!-- 404 CONTENT SECTION -->
+<main class="not-found-section">
+    <div class="container">
+        <div class="mono label" style="margin-bottom: 16px;">// ERROR CODE: 404_NOT_FOUND</div>
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Signal lost in the <span class="accent">Aether</span> network.</h2>
+        <p class="error-desc">
+            The coordinates or route you requested do not exist or have been reindexed.
+            Return to the ecosystem to resume navigation.
+        </p>
+        <div>
+            <a href="http://aether.isroot.in" class="button">
+                <span>Return to Ecosystem</span>
+                <span>↗</span>
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <span>© 2026 AETHER SYSTEMS</span>
+        <span>ALL RIGHTS RESERVED</span>
+    </div>
 </footer>
 
 <script>
-// Random quote selection on load
-const quotes = [
-  "Looks like this page wandered off into the mist.",
-  "Even the moon can't find where this page went.",
-  "You took a wrong turn at the digital horizon.",
-  "Error 404: Page got carried away by the rain.",
-  "Not all who wander are lost... but this page definitely is."
-];
-document.getElementById('quoteDialogue').textContent = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+/* CURSOR LIGHT */
+const glow = document.getElementById("cursorGlow");
+let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
 
-const canvas = document.getElementById('animeCanvas');
-const ctx = canvas.getContext('2d');
-const stage = document.getElementById('stage');
+window.addEventListener("mousemove", e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
 
-let frameCount = 0;
-
-// Character Position & Physics
-let charX = 800;
-let charY = 580;
-let targetX = 800;
-let targetY = 580;
-let wanderTimer = 0;
-
-let isDragging = false;
-let dragOffsetX = 0;
-let dragOffsetY = 0;
-
-// Lightning state
-let lightningAlpha = 0;
-let lightningBolt = [];
-let lightningTimer = 100;
-
-// Raindrops
-const raindrops = Array.from({length: 80}, (_, i) => ({
-  x: (i * 131) % 1600,
-  y: (i * 47) % 1000,
-  length: 35 + (i * 17) % 45,
-  speed: 30 + (i * 7) % 20
-}));
-
-// Mouse/Touch Drag Handlers
-function getCanvasPoint(e) {
-  const rect = canvas.getBoundingClientRect();
-  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  return {
-    x: (clientX - rect.left) * (canvas.width / rect.width),
-    y: (clientY - rect.top) * (canvas.height / rect.height)
-  };
-}
-
-stage.addEventListener('mousedown', (e) => startDrag(e));
-stage.addEventListener('touchstart', (e) => startDrag(e), {passive: true});
-
-window.addEventListener('mousemove', (e) => onDrag(e));
-window.addEventListener('touchmove', (e) => onDrag(e), {passive: true});
-
-window.addEventListener('mouseup', endDrag);
-window.addEventListener('touchend', endDrag);
-
-function startDrag(e) {
-  const pt = getCanvasPoint(e);
-  if (Math.hypot(pt.x - charX, pt.y - charY) < 180) {
-    isDragging = true;
-    dragOffsetX = charX - pt.x;
-    dragOffsetY = charY - pt.y;
-  }
-}
-
-function onDrag(e) {
-  if (!isDragging) return;
-  const pt = getCanvasPoint(e);
-  targetX = Math.max(200, Math.min(1400, pt.x + dragOffsetX));
-  targetY = Math.max(350, Math.min(850, pt.y + dragOffsetY));
-}
-
-function endDrag() {
-  isDragging = false;
-}
-
-// Generate lightning bolt path
-function triggerLightning() {
-  lightningAlpha = 1.0;
-  lightningBolt = [];
-  let lx = 300 + Math.random() * 1000;
-  let ly = 0;
-  lightningBolt.push({x: lx, y: ly});
-  while (ly < 600) {
-    lx += (Math.random() - 0.5) * 80;
-    ly += 40 + Math.random() * 60;
-    lightningBolt.push({x: lx, y: ly});
-  }
-}
-
-function draw() {
-  frameCount++;
-
-  // Lightning timer
-  lightningTimer--;
-  if (lightningTimer <= 0) {
-    triggerLightning();
-    lightningTimer = 180 + Math.floor(Math.random() * 250);
-  }
-  if (lightningAlpha > 0) {
-    lightningAlpha -= 0.08;
-  }
-
-  // Wander logic
-  if (!isDragging) {
-    wanderTimer--;
-    if (wanderTimer <= 0) {
-      wanderTimer = 140 + Math.floor(Math.random() * 200);
-      targetX = 350 + Math.random() * 900;
-      targetY = 420 + Math.random() * 320;
+function animateGlow() {
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
+    if (glow) {
+        glow.style.left = glowX + "px";
+        glow.style.top = glowY + "px";
     }
-  }
-
-  charX += (targetX - charX) * 0.05;
-  charY += (targetY - charY) * 0.05;
-
-  // --- BACKGROUND SKY ---
-  const skyGrad = ctx.createLinearGradient(0, 0, 0, 1000);
-  skyGrad.addColorStop(0, '#0a1020');
-  skyGrad.addColorStop(1, '#030508');
-  ctx.fillStyle = skyGrad;
-  ctx.fillRect(0, 0, 1600, 1000);
-
-  if (lightningAlpha > 0) {
-    ctx.fillStyle = `rgba(213, 226, 255, ${lightningAlpha * 0.25})`;
-    ctx.fillRect(0, 0, 1600, 1000);
-  }
-
-  // --- MOON ---
-  ctx.fillStyle = '#d5e2ff';
-  ctx.beginPath();
-  ctx.arc(1250, 200, 85, 0, Math.PI * 2);
-  ctx.fill();
-
-  const moonGlow = ctx.createRadialGradient(1250, 200, 85, 1250, 200, 320);
-  moonGlow.addColorStop(0, 'rgba(213, 226, 255, 0.3)');
-  moonGlow.addColorStop(1, 'rgba(3, 5, 8, 0)');
-  ctx.fillStyle = moonGlow;
-  ctx.beginPath();
-  ctx.arc(1250, 200, 320, 0, Math.PI * 2);
-  ctx.fill();
-
-  // --- LIGHTNING BOLT ---
-  if (lightningAlpha > 0 && lightningBolt.length > 1) {
-    ctx.save();
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 4;
-    ctx.shadowColor = '#d5e2ff';
-    ctx.shadowBlur = 30;
-    ctx.beginPath();
-    ctx.moveTo(lightningBolt[0].x, lightningBolt[0].y);
-    for (let i = 1; i < lightningBolt.length; i++) {
-      ctx.lineTo(lightningBolt[i].x, lightningBolt[i].y);
-    }
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  // --- CITY SILHOUETTE ---
-  ctx.fillStyle = '#05080f';
-  ctx.beginPath();
-  ctx.moveTo(0, 1000);
-  ctx.lineTo(0, 700);
-  ctx.lineTo(180, 640);
-  ctx.lineTo(350, 680);
-  ctx.lineTo(650, 560);
-  ctx.lineTo(900, 620);
-  ctx.lineTo(1200, 510);
-  ctx.lineTo(1450, 570);
-  ctx.lineTo(1600, 530);
-  ctx.lineTo(1600, 1000);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.fillStyle = '#f0c36a';
-  [190, 360, 660, 910, 1210, 1460].forEach((bx, i) => {
-    ctx.fillRect(bx, 680 + (i * 22) % 80, 3, 12);
-  });
-
-  // --- RAIN ---
-  ctx.strokeStyle = 'rgba(231, 238, 252, 0.35)';
-  ctx.lineWidth = 1.5;
-  raindrops.forEach(drop => {
-    const ry = (drop.y + frameCount * drop.speed) % 1100 - 100;
-    ctx.beginPath();
-    ctx.moveTo(drop.x, ry);
-    ctx.lineTo(drop.x - 3, ry + drop.length);
-    ctx.stroke();
-  });
-
-  // --- 404 WATERMARK ---
-  ctx.fillStyle = 'rgba(213, 226, 255, 0.035)';
-  ctx.font = '900 300px system-ui, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('404', 800, 480);
-
-  // ==========================================
-  // --- DETAILED ANIME CHARACTER & LIGHTSABER COMBAT ---
-  // ==========================================
-  ctx.save();
-  ctx.translate(charX, charY);
-
-  const floatY = Math.sin(frameCount * 0.05) * 5;
-  ctx.translate(0, floatY);
-
-  // Cloak / Robe
-  const cloakGrad = ctx.createLinearGradient(-60, 100, 60, 300);
-  cloakGrad.addColorStop(0, '#1c2438');
-  cloakGrad.addColorStop(0.5, '#0d121f');
-  cloakGrad.addColorStop(1, '#05070a');
-  ctx.fillStyle = cloakGrad;
-  ctx.beginPath();
-  ctx.moveTo(-55, 130);
-  ctx.lineTo(-120 + Math.sin(frameCount * 0.1) * 15, 280);
-  ctx.lineTo(0, 310);
-  ctx.lineTo(120 + Math.cos(frameCount * 0.1) * 15, 280);
-  ctx.lineTo(55, 130);
-  ctx.closePath();
-  ctx.fill();
-
-  // Torso
-  ctx.fillStyle = '#0f172a';
-  ctx.beginPath();
-  ctx.roundRect(-42, 90, 84, 150, [10, 10, 4, 4]);
-  ctx.fill();
-
-  // Scarf
-  ctx.fillStyle = '#e23b4a';
-  ctx.beginPath();
-  ctx.moveTo(-45, 100);
-  ctx.lineTo(0, 115);
-  ctx.lineTo(45, 100);
-  ctx.lineTo(35, 125);
-  ctx.lineTo(-35, 125);
-  ctx.closePath();
-  ctx.fill();
-
-  // --- ARMS & DETAILED HANDS ---
-  ctx.fillStyle = '#0f172a';
-  ctx.beginPath();
-  ctx.roundRect(-55, 110, 22, 90, [8]);
-  ctx.fill();
-  ctx.fillStyle = '#f0c2ae';
-  ctx.beginPath();
-  ctx.arc(-44, 195, 10, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = '#0f172a';
-  ctx.beginPath();
-  ctx.roundRect(33, 110, 22, 90, [8]);
-  ctx.fill();
-  ctx.fillStyle = '#f0c2ae';
-  ctx.beginPath();
-  ctx.arc(44, 195, 10, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Neck & Head
-  ctx.fillStyle = '#f0c2ae';
-  ctx.fillRect(-14, 65, 28, 35);
-
-  // Back hair
-  ctx.fillStyle = '#10141c';
-  ctx.beginPath();
-  ctx.ellipse(0, 25, 58, 65, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Face
-  ctx.fillStyle = '#f0c2ae';
-  ctx.beginPath();
-  ctx.moveTo(-38, 20);
-  ctx.lineTo(-32, 65);
-  ctx.lineTo(0, 80);
-  ctx.lineTo(32, 65);
-  ctx.lineTo(38, 20);
-  ctx.arc(0, 20, 38, 0, Math.PI);
-  ctx.closePath();
-  ctx.fill();
-
-  // Chin shadow
-  ctx.fillStyle = 'rgba(210, 160, 140, 0.4)';
-  ctx.beginPath();
-  ctx.arc(0, 65, 15, 0, Math.PI);
-  ctx.fill();
-
-  // Eyes (Determined combat gaze)
-  ctx.fillStyle = '#f6f3ee';
-  ctx.beginPath();
-  ctx.ellipse(-20, 25, 14, 8, -0.1, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#e7a04a';
-  ctx.beginPath();
-  ctx.arc(-20, 25, 6, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#05070a';
-  ctx.beginPath();
-  ctx.arc(-20, 25, 3, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(-23, 21, 3, 3);
-
-  ctx.fillStyle = '#f6f3ee';
-  ctx.beginPath();
-  ctx.ellipse(20, 25, 14, 8, 0.1, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#e7a04a';
-  ctx.beginPath();
-  ctx.arc(20, 25, 6, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#05070a';
-  ctx.beginPath();
-  ctx.arc(20, 25, 3, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(17, 21, 3, 3);
-
-  ctx.strokeStyle = '#10141c';
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  ctx.moveTo(-33, 18); ctx.lineTo(-7, 20);
-  ctx.moveTo(7, 20); ctx.lineTo(33, 18);
-  ctx.stroke();
-
-  // Front Bangs
-  ctx.fillStyle = '#16141c';
-  ctx.beginPath();
-  ctx.moveTo(-45, 10);
-  ctx.lineTo(-30, -35);
-  ctx.lineTo(-10, -45);
-  ctx.lineTo(10, -45);
-  ctx.lineTo(30, -35);
-  ctx.lineTo(45, 10);
-  ctx.lineTo(25, 5);
-  ctx.lineTo(0, -15);
-  ctx.lineTo(-25, 5);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.strokeStyle = 'rgba(213, 226, 255, 0.25)';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(-20, -25); ctx.lineTo(-10, -5);
-  ctx.moveTo(10, -25); ctx.lineTo(20, -5);
-  ctx.stroke();
-
-  // ==========================================
-  // --- LIGHTSABER COMBAT MOTION (FIGHTING STANCE) ---
-  // ==========================================
-  ctx.save();
-  ctx.translate(20, 180); // pivot near hands
-
-  // Combat stance oscillation (swings back and forth like fighting)
-  const combatAngle = -0.6 + Math.sin(frameCount * 0.12) * 0.45 + Math.cos(frameCount * 0.08) * 0.2;
-  ctx.rotate(combatAngle);
-
-  // Lightsaber Hilt
-  ctx.fillStyle = '#8a99ad';
-  ctx.fillRect(-10, -25, 20, 50);
-  ctx.fillStyle = '#e23b4a'; // activation switch
-  ctx.fillRect(-4, -5, 8, 10);
-
-  // Glowing Lightsaber Blade (Crimson Red / Electric Cyan energy)
-  ctx.save();
-  ctx.shadowColor = '#e23b4a';
-  ctx.shadowBlur = 35;
-
-  const bladeGrad = ctx.createLinearGradient(0, -25, 0, -240);
-  bladeGrad.addColorStop(0, '#ffffff');
-  bladeGrad.addColorStop(0.15, '#ff7686');
-  bladeGrad.addColorStop(1, '#e23b4a');
-
-  ctx.fillStyle = bladeGrad;
-  ctx.beginPath();
-  ctx.roundRect(-6, -240, 12, 215, 6);
-  ctx.fill();
-  ctx.restore();
-
-  ctx.restore(); // restore lightsaber transform
-  ctx.restore(); // restore character transform
-
-  requestAnimationFrame(draw);
+    requestAnimationFrame(animateGlow);
 }
-
-requestAnimationFrame(draw);
+animateGlow();
 </script>
+
 </body>
 </html>
