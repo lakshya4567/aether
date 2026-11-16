@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SchoolCast - Download Center</title>
+<style>
+  /* --- RESET & BASICS --- */
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: #0b0d17;
+    color: #e0e6ed;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* --- BACKGROUND EFFECTS --- */
+  .bg-glow {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: 
+      radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* --- LAYOUT UTILS --- */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  section {
+    padding: 80px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* --- HEADER / HERO --- */
+  header {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+  }
+  .logo-circle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 30px;
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #fff, #c7d2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+  }
+  .subtitle {
+    font-size: 1.2rem;
+    color: #94a3b8;
+    max-width: 600px;
+    margin-bottom: 40px;
+  }
+
+  /* --- BUTTON CONTAINER --- */
+  .btn-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  /* --- BUTTON STYLES --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  /* Primary Button (Admin) */
+  .btn-primary {
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    color: white;
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(79, 70, 229, 0.5);
+    filter: brightness(1.1);
+  }
+
+  /* Secondary Button (Agent) */
+  .btn-secondary {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    backdrop-filter: blur(10px);
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.3);
+  }
+
+  .small-note {
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+
+  /* --- FEATURES GRID --- */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+  .feature-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 30px;
+    border-radius: 16px;
+    transition: transform 0.3s;
+  }
+  .feature-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(168, 85, 247, 0.3);
+  }
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .feature-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .feature-desc {
+    font-size: 0.95rem;
+    color: #94a3b8;
+  }
+
+  /* --- SPECS TABLE --- */
+  .specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .specs-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #cbd5e1;
+  }
+  .specs-table td:first-child {
+    font-weight: 600;
+    color: #fff;
+    width: 40%;
+    background: rgba(255,255,255,0.03);
+  }
+  .specs-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* --- FAQ --- */
+  .faq-item {
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .faq-q {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+  }
+  .faq-a {
+    color: #94a3b8;
+    font-size: 0.95rem;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    padding: 60px 0;
+    text-align: center;
+    color: #475569;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  
+  /* Mobile Tweaks */
+  @media (max-width: 600px) {
+    h1 { font-size: 2.5rem; }
+    header { min-height: 80vh; }
+    .btn-group { flex-direction: column; width: 100%; }
+    .btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- HERO SECTION -->
+<header>
+  <div class="container">
+    <div class="logo-circle">S</div>
+    <h1>SchoolCast</h1>
+    <p class="subtitle">The ultimate administrative tool for managing school broadcasts, announcements, and digital signage seamlessly.</p>
+    
+    <!-- BUTTON GROUP -->
+    <div class="btn-group">
+      
+      <!-- ADMIN BUTTON -->
+      <a href="https://www.dropbox.com/scl/fi/clmmw5y3p452p5qma4vg4/SchoolCast-Admin-Setup-1.0.0.exe?rlkey=a2dt1nkcff8tw8pz8hxr75i8l&st=e3znjum6&dl=1" 
+         class="btn btn-primary"
+         target="_blank">
+         ⬇ Download Admin Setup
+      </a>
+      
+      <!-- AGENT BUTTON -->
+      <a href="https://www.dropbox.com/scl/fi/a2klenauc0evwan3k8yyx/SchoolCastAgent.exe?rlkey=211v0nrwu3t92qlp60x5fmfpy&st=gslfezfi&dl=1" 
+         class="btn btn-secondary"
+         target="_blank">
+         📺 Download Agent Client
+      </a>
+
+    </div>
+    
+    <p class="small-note">Both files are hosted securely on Dropbox • Windows 10/11</p>
+  </div>
+</header>
+
+<!-- EXPLANATION SECTION -->
+<section id="difference">
+  <div class="container">
+    <h2 style="font-size: 2rem; margin-bottom: 30px; text-align: center;">Which one do I need?</h2>
+    <div class="features-grid">
+      <div class="feature-card" style="border-top: 4px solid #6366f1;">
+        <span class="feature-icon">💻</span>
+        <div class="feature-title">Admin Setup</div>
+        <div class="feature-desc">
+          <strong>For Office Computers.</strong><br>
+          Install this on the main computer used by staff to create schedules, upload videos, and send announcements.
+        </div>
+      </div>
+      <div class="feature-card" style="border-top: 4px solid #10b981;">
+        <span class="feature-icon">📺</span>
+        <div class="feature-title">Agent Client</div>
+        <div class="feature-desc">
+          <strong>For Display Screens.</strong><br>
+          Install this on the TVs or monitors around the school. It runs in the background and displays the content sent by the Admin.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section id="features">
+  <div class="container">
+    <h2 style="font-size: 2rem; margin-bottom: 10px;">Key Features</h2>
+    <p style="color: #94a3b8; margin-bottom: 30px;">Everything you need to keep your school informed.</p>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📢</span>
+        <div class="feature-title">Instant Broadcasts</div>
+        <div class="feature-desc">Push emergency alerts or daily announcements to all connected screens instantly.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📅</span>
+        <div class="feature-title">Smart Scheduling</div>
+        <div class="feature-desc">Plan your content weeks in advance. Set specific times for bells or slideshows.</div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔒</span>
+        <div class="feature-title">Secure Connection</div>
+        <div class="feature-desc">Encrypted communication between the Admin panel and Agent devices.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM REQUIREMENTS -->
+<section id="specs">
+  <div class="container">
+    <h2 style="font-size: 2rem; margin-bottom: 20px;">System Requirements</h2>
+    <table class="specs-table">
+      <tr>
+        <td>Operating System</td>
+        <td>Windows 10 (64-bit) or Windows 11</td>
+      </tr>
+      <tr>
+        <td>Processor</td>
+        <td>Intel Core i3 or AMD equivalent (2.0 GHz+)</td>
+      </tr>
+      <tr>
+        <td>Memory (RAM)</td>
+        <td>4 GB minimum (8 GB recommended for Admin)</td>
+      </tr>
+      <tr>
+        <td>Network</td>
+        <td>Stable Internet connection required for sync</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section id="faq">
+  <div class="container">
+    <h2 style="font-size: 2rem; margin-bottom: 30px;">Frequently Asked Questions</h2>
+    
+    <div class="faq-item">
+      <div class="faq-q">Can I install both on the same computer?</div>
+      <div class="faq-a">Yes! If you have a computer that acts as both the control center and a display screen, you can install both the Admin Setup and the Agent.</div>
+    </div>
+    
+    <div class="faq-item">
+      <div class="faq-q">How do I connect the Agent to the Admin?</div>
+      <div class="faq-a">Once both are installed, open the Admin panel. It will automatically search for Agents on your network. You just need to click "Approve".</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>&copy; 2026 SchoolCast Technologies. All rights reserved.</p>
+    <p style="margin-top: 10px; font-size: 0.8rem;">
+      <a href="#" style="color: #64748b; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
+      <a href="#" style="color: #64748b; text-decoration: none; margin: 0 10px;">Support</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
