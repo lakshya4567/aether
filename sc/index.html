@@ -60,6 +60,17 @@
   .btn-secondary { background: rgba(255,255,255,.05); color: #fff; backdrop-filter: blur(10px); }
   .btn-secondary:hover { background: rgba(255,255,255,.1); transform: translateY(-3px); border-color: rgba(255,255,255,.3); }
 
+  .btn-admin2 {
+    background: linear-gradient(90deg,#2563eb,#06b6d4);
+    color: white;
+    box-shadow: 0 10px 30px rgba(37,99,235,.3);
+  }
+  .btn-admin2:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(37,99,235,.5);
+    filter: brightness(1.1);
+  }
+
   .btn-server-zip { background: linear-gradient(90deg,#0891b2,#2563eb); color: white; box-shadow: 0 10px 30px rgba(8,145,178,.2); }
   .btn-server-zip:hover { transform: translateY(-3px); filter: brightness(1.15); }
 
@@ -120,16 +131,23 @@
     <p class="subtitle">The ultimate administrative tool for managing school broadcasts, announcements, and digital signage seamlessly.</p>
 
     <div class="btn-group">
-      <a href="https://www.dropbox.com/scl/fi/clmmw5y3p452p5qma4vg4/SchoolCast-Admin-Setup-1.0.0.exe?rlkey=a2dt1nkcff8tw8pz8hxr75i8l&st=e3znjum6&dl=1" class="btn btn-primary" target="_blank" rel="noopener">
+      <a href="https://www.dropbox.com/scl/fi/clmmw5y3p452p5qma4vg4/SchoolCast-Admin-Setup-1.0.0.exe?rlkey=a2dt1nkcff8tw8pz8hxr75i8l&st=e3znjum6&dl=1"
+         class="btn btn-primary" target="_blank" rel="noopener">
         ⬇ Download Admin Setup
       </a>
 
-      <a href="https://www.dropbox.com/scl/fi/a2klenauc0evwan3k8yyx/SchoolCastAgent.exe?rlkey=211v0nrwu3t92qlp60x5fmfpy&st=gslfezfi&dl=1" class="btn btn-secondary" target="_blank" rel="noopener">
+      <a href="https://www.dropbox.com/scl/fi/d75j891ybn51i741sfj5p/release.zip?rlkey=6bozhwjcqpj6e674ynuwjxfbc&st=9by63gma&dl=1"
+         class="btn btn-admin2" target="_blank" rel="noopener">
+        ⬇ Admin Panel 2 – Stable
+      </a>
+
+      <a href="https://www.dropbox.com/scl/fi/a2klenauc0evwan3k8yyx/SchoolCastAgent.exe?rlkey=211v0nrwu3t92qlp60x5fmfpy&st=gslfezfi&dl=1"
+         class="btn btn-secondary" target="_blank" rel="noopener">
         📺 Download Agent Client
       </a>
     </div>
 
-    <p class="small-note">Admin and Agent downloads • Windows 10/11</p>
+    <p class="small-note">Admin, Admin Panel 2 and Agent downloads • Windows 10/11</p>
   </div>
 </header>
 
@@ -142,7 +160,6 @@
     </p>
 
     <div class="features-grid">
-      <!-- PORTABLE ZIP -->
       <div class="feature-card" style="border-top:4px solid #0891b2;">
         <span class="feature-icon">📦</span>
         <div class="feature-title">Portable ZIP Server</div>
@@ -158,7 +175,6 @@
         </div>
       </div>
 
-      <!-- STANDALONE EXE -->
       <div class="feature-card" style="border-top:4px solid #059669;">
         <span class="feature-icon">⚙️</span>
         <div class="feature-title">Standalone EXE Server</div>
